@@ -2,11 +2,7 @@
 
 int main()
 {
-    ChessWindow chessWindow(900.0f, 900.0f);
-
-    chessWindow.run();
-
-    
+    ChessWindow chessWindow(1000, 1000);  
 
     return 0;
 }
