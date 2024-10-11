@@ -1,0 +1,3 @@
+/home/aimray/Projects/Repos/ChessTwo/build/CMakeFiles/chess.dir
+/home/aimray/Projects/Repos/ChessTwo/build/CMakeFiles/edit_cache.dir
+/home/aimray/Projects/Repos/ChessTwo/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/chess.dir/main.cpp.o CMakeFiles/chess.dir/Game.cpp.o CMakeFiles/chess.dir/Board.cpp.o CMakeFiles/chess.dir/ChessWindow.cpp.o CMakeFiles/chess.dir/Piece.cpp.o CMakeFiles/chess.dir/Rook.cpp.o -o chess  -lsfml-graphics -lsfml-window -lsfml-system 
