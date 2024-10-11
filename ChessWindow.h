@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <vector>
+#include "Board.h"
 
 #pragma once
 
@@ -8,14 +8,16 @@
 class ChessWindow
 {
 private:
-	float height;
-	float width;
-	std::string windowName;
-	sf::RenderWindow window;
-	std::vector<sf::RectangleShape> board;
+	std::string mWindowName;
+	sf::RenderWindow mWindow;
+	
 
 public:
-	ChessWindow(float width, float height);
+	sf::Vector2u mWindowSize;
+	ChessWindow(int width, int height);
 	void run();
+private:
+	Board board;
+	void updateView();
 };
 

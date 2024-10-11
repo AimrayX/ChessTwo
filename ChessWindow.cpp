@@ -1,40 +1,51 @@
 #include "ChessWindow.h"
+#include <iostream>
 
-ChessWindow::ChessWindow(float w, float h)
-    : width(w), height(h) {
-    
-    sf::RectangleShape rectangle(sf::Vector2f(width / 8.0f, height / 8.0f));
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if ((j+i) % 2 == 0) {
-                rectangle.setFillColor(sf::Color::White);
-                
-            }
-            else {
-                rectangle.setFillColor(sf::Color::Black);
-            }
-            rectangle.setPosition(sf::Vector2f(j * (height / 8.0f), i * (width / 8.0f)));
-            board.push_back(rectangle);
-        }
-    }
-    
+ChessWindow::ChessWindow(int w, int h)
+    : mWindowSize(w, h), mWindow(sf::VideoMode(w, h), "Chess SFML"), board(mWindowSize) {
+    run();
 }
 
 void ChessWindow::run() {
-    sf::RenderWindow window(sf::VideoMode(width, height), "Chess SFML");
-    while (window.isOpen())
+    while (mWindow.isOpen())
     {
         sf::Event event;
-        while (window.pollEvent(event))
+        while (mWindow.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+                mWindow.close();
+            if (event.type == sf::Event::Resized) {
+                updateView();
+                board.updateBoardTexture(mWindow.getSize());
+                std::cout << "updated" << std::endl;
+            }
         }
 
-        window.clear();
-        for (sf::RectangleShape rect : board) {
-            window.draw(rect);
+        mWindow.clear();
+        for (sf::RectangleShape rect : board.mBoardTexture) {
+            mWindow.draw(rect);
         }
-        window.display();
+        mWindow.draw(board.rook1.sprite);
+        mWindow.display();
     }
+}
+
+void ChessWindow::updateView() {
+    sf::Vector2u windowSize = mWindow.getSize();
+    unsigned int minDimension = std::min(windowSize.x, windowSize.y);
+    sf::FloatRect viewport(0.f, 0.f, 1.f, 1.f);
+    std::cout << "called" << std::endl;
+
+    if (windowSize.x > windowSize.y) {
+        viewport.width = windowSize.y / static_cast<float>(windowSize.x);
+        viewport.left = (1.f - viewport.width) / 2.f;
+    }
+    else {
+        viewport.height = windowSize.x / static_cast<float>(windowSize.y);
+        viewport.top = (1.f - viewport.height) / 2.f;
+    }
+
+    sf::View view(sf::FloatRect(0.f, 0.f, minDimension, minDimension));
+    view.setViewport(viewport);
+    mWindow.setView(view);
 }
