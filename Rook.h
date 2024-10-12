@@ -7,10 +7,10 @@
 class Rook : public Piece
 {
 private:
-    sf::Texture texture;
+    sf::Texture mTexture;
 
 public: 
-    sf::Sprite sprite;
+    sf::Sprite mSprite;
     Rook(int boardSize);
 };
 

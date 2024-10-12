@@ -2,7 +2,7 @@
 
 int main()
 {
-    ChessWindow chessWindow(1000, 1000);  
+    ChessWindow chessWindow(1000, 1000, "Test");  
 
     return 0;
 }

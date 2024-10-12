@@ -6,6 +6,8 @@ project(
     DESCRIPTION "Chess progam with SFML"
     LANGUAGES CXX)
 
+add_compile_options(-std=c++23 -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -Werror)
+
 add_executable(chess main.cpp Game.cpp Game.h Board.cpp Board.h ChessWindow.cpp ChessWindow.h Piece.cpp Piece.h Rook.cpp Rook.h)
 
 target_link_libraries(chess PUBLIC sfml-graphics sfml-window sfml-system)

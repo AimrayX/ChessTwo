@@ -9,12 +9,14 @@ class ChessWindow
 {
 private:
 	std::string mWindowName;
+	sf::Vector2u mWindowSize;
 	sf::RenderWindow mWindow;
 	
 
 public:
-	sf::Vector2u mWindowSize;
-	ChessWindow(int width, int height);
+	
+	ChessWindow(unsigned int width, unsigned int height, std::string windowName);
+	
 	void run();
 private:
 	Board board;

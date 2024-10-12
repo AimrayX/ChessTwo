@@ -2,12 +2,12 @@
 #include <iostream>
 
 Rook::Rook(int boardSize)
-	:Piece(100, 100, 5) {
-	texture.loadFromFile("C:/Users/Timmy/source/repos/ChessTwo/assets/pieces.png");
-	std::cout << "loaded with exit code: " << texture.loadFromFile("pieces.png") << std::endl;
+	:Piece(0, 0, 5, 1, false, true, true, 8), mTexture {}, mSprite {} {
+	mTexture.loadFromFile("C:/Users/Timmy/source/repos/ChessTwo/assets/pieces.png");
+	std::cout << "loaded with exit code: " << mTexture.loadFromFile("pieces.png") << std::endl;
 	
-	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, 334, 334));
-	sprite.setScale(boardSize / 334, boardSize / 334);
-	sprite.setPosition(0, 0);
+	mSprite.setTexture(mTexture);
+	mSprite.setTextureRect(sf::IntRect(0, 0, 334, 334));
+	mSprite.setScale(static_cast<float>(boardSize / 334), static_cast<float>(boardSize / 334));
+	mSprite.setPosition(0, 0);
 }

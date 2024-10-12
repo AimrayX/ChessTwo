@@ -7,7 +7,8 @@ protected:
 	std::string mTextureFile;
 	int mTextureWidth;
 	int mTextureHeight;
-
+	int mTexturePositionX;
+	int mTexturePositionY;
 public:
 	int mValue;
 	bool mColor;
@@ -15,7 +16,7 @@ public:
 	bool movesHorizontaly;
 	bool movesVertically;
 	int mRange;
-	Piece(float textureWidth, float textureHeight, int value);
+	Piece(int texturePositionX, int texturePositionY, int value, bool color, bool movesDiagonaly, bool movesHorizonatly, bool movesVertically, int range);
 
 };
 
