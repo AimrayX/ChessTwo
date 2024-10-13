@@ -1,6 +1,5 @@
 #pragma once
 #include "Piece.h"
-#include "Board.h"
 #include <SFML/Graphics.hpp>
 
 
@@ -11,6 +10,6 @@ private:
 
 public: 
     sf::Sprite mSprite;
-    Rook(int boardSize);
+    Rook(float boardSize);
 };
 

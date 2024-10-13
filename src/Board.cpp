@@ -2,7 +2,7 @@
 #include <iostream>
 
 Board::Board(sf::Vector2u windowSize)
-    : mWidth{}, mHeight{}, mBoardTexture(0) , /*rook1(std::min(windowSize.x, windowSize.y)),*/ mPieces(0) {
+    : mWidth{}, mHeight{}, mBoardTexture(), rook1(static_cast<float>(std::min(windowSize.x, windowSize.y))), mPieces() {
     std::cout << "constructor called : " << windowSize.x << std::endl;
     updateBoardTexture(windowSize);
     initalizeStartingPosition();
@@ -26,7 +26,10 @@ void Board::updateBoardTexture(sf::Vector2u windowSize) {
             }
             rectangle.setPosition(static_cast<float>(j) * (mWidth / 8.0f), static_cast<float>(i) * (mHeight / 8.0f));
             mBoardTexture.push_back(rectangle);
-            std::cout << "added rectangle: " << i+j << " " << rectangle.getSize().x << rectangle.getSize().y <<  std::endl;
+            /*
+            std::cout << "added rectangle: " << i+j << " " << rectangle.getSize().x << " x " 
+            << rectangle.getSize().y << " vector size: " << mBoardTexture.size() << std::endl;
+            */
         }
     }
 }

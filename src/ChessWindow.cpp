@@ -2,7 +2,7 @@
 #include <iostream>
 
 ChessWindow::ChessWindow(unsigned int w, unsigned int h, std::string windowName)
-    : mWindowName {windowName}, mWindowSize(w, h), mWindow(sf::VideoMode(w, h), "Chess SFML"), board(mWindowSize) {
+    : mWindowName {windowName}, mWindowSize(w, h), mWindow(sf::VideoMode(w, h), windowName), board(mWindowSize) {
     run();
 }
 
@@ -24,8 +24,9 @@ void ChessWindow::run() {
         mWindow.clear();
         for (sf::RectangleShape rect : board.mBoardTexture) {
             mWindow.draw(rect);
+            //std::cout << "Position of rectangle printed: " << rect.getPosition().x << " size: " << rect.getSize().x << std::endl;
         }
-        //mWindow.draw(board.rook1.sprite);
+        mWindow.draw(board.rook1.mSprite);
         mWindow.display();
     }
 }
@@ -37,15 +38,16 @@ void ChessWindow::updateView() {
     std::cout << "called" << std::endl;
 
     if (windowSize.x > windowSize.y) {
-        viewport.width = static_cast<float>(windowSize.y / windowSize.x);
+        viewport.width = static_cast<float>(windowSize.y) / static_cast<float>(windowSize.x);
         viewport.left = (1.f - viewport.width) / 2.f;
     }
     else {
-        viewport.height = static_cast<float>(windowSize.x / windowSize.y);
+        viewport.height = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
         viewport.top = (1.f - viewport.height) / 2.f;
     }
 
     sf::View view(sf::FloatRect(0.f, 0.f, static_cast<float>(minDimension), static_cast<float>(minDimension)));
     view.setViewport(viewport);
     mWindow.setView(view);
+    std::cout << "view set to" << viewport.width << " x " << viewport.height << std::endl;
 }

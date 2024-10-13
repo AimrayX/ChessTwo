@@ -11,15 +11,14 @@ private:
 	std::string mWindowName;
 	sf::Vector2u mWindowSize;
 	sf::RenderWindow mWindow;
-	
+	Board board;
 
 public:
-	
 	ChessWindow(unsigned int width, unsigned int height, std::string windowName);
 	
 	void run();
 private:
-	Board board;
+	
 	void updateView();
 };
 

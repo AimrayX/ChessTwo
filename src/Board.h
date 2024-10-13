@@ -12,14 +12,17 @@ private:
 public:
 	float mWidth;
 	float mHeight;
-	//Rook rook1;
+	
+
 	std::vector<sf::RectangleShape> mBoardTexture;
+	Rook rook1;
+	void updateBoardTexture(sf::Vector2u size);
+	void initalizeStartingPosition();
 	Board(sf::Vector2u windowSize);
 	
 	
 	std::vector<Piece *> mPieces;
-	void updateBoardTexture(sf::Vector2u size);
-	void initalizeStartingPosition();
+	
 	
 };
 
