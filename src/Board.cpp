@@ -2,7 +2,12 @@
 #include <iostream>
 
 Board::Board(sf::Vector2u windowSize)
-    : mWidth{}, mHeight{}, mBoardTexture(), rook1(static_cast<float>(std::min(windowSize.x, windowSize.y))), mPieces() {
+    : mWidth{}, mHeight{}, mBoardTexture(), 
+    rook1b(static_cast<float>(std::min(windowSize.x, windowSize.y))), 
+    rook2b(static_cast<float>(std::min(windowSize.x, windowSize.y))),
+    rook1w(static_cast<float>(std::min(windowSize.x, windowSize.y))), 
+    rook2w(static_cast<float>(std::min(windowSize.x, windowSize.y))), 
+    mPieces() {
     std::cout << "constructor called : " << windowSize.x << std::endl;
     updateBoardTexture(windowSize);
     initalizeStartingPosition();

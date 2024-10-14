@@ -15,7 +15,10 @@ public:
 	
 
 	std::vector<sf::RectangleShape> mBoardTexture;
-	Rook rook1;
+	Rook rook1b;
+	Rook rook2b;
+	Rook rook1w;
+	Rook rook2w;
 	void updateBoardTexture(sf::Vector2u size);
 	void initalizeStartingPosition();
 	Board(sf::Vector2u windowSize);
