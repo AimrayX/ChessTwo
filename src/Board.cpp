@@ -1,16 +1,18 @@
 #include "Board.h"
+
 #include <iostream>
 
 Board::Board(sf::Vector2u windowSize)
-    : mWidth{}, mHeight{}, mBoardTexture(), 
-    rook1b(static_cast<float>(std::min(windowSize.x, windowSize.y))), 
-    rook2b(static_cast<float>(std::min(windowSize.x, windowSize.y))),
-    rook1w(static_cast<float>(std::min(windowSize.x, windowSize.y))), 
-    rook2w(static_cast<float>(std::min(windowSize.x, windowSize.y))), 
-    mPieces() {
+    : mWidth{}, mHeight{}, mBoardTexture(), mPieces {} {
+
+    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), true)); // color true or false as needed
+    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), true));
+    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), false));
+    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), false));
+
     std::cout << "constructor called : " << windowSize.x << std::endl;
     updateBoardTexture(windowSize);
-    initalizeStartingPosition();
+    
 }
 
 void Board::updateBoardTexture(sf::Vector2u windowSize) {
@@ -39,6 +41,3 @@ void Board::updateBoardTexture(sf::Vector2u windowSize) {
     }
 }
 
-void Board::initalizeStartingPosition() {
-    
-}

@@ -1,5 +1,5 @@
 #include "RookMoveBehaviour.h"
 
-long long getValidMoves() {
-    
+long long RookMoveBehaviour::getValidMovesBitmap() const {
+    return 0;
 }

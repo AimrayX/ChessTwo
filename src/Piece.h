@@ -4,25 +4,20 @@
 
 class Piece
 {
-private:
+protected:
 	std::string mTextureFile;
 	int mTextureWidth;
 	int mTextureHeight;
 	int mTexturePositionX;
 	int mTexturePositionY;
-	sf::Sprite mSprite;
+ 	sf::Vector2f mPosition;
 	sf::Texture mTexture;
-
-protected:
 	
 public:
+	sf::Sprite mSprite;
 	int mValue;
 	bool mColor;
-	bool movesDiagonaly;
-	bool movesHorizontaly;
-	bool movesVertically;
-	int mRange;
-	Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, bool movesDiagonaly, bool movesHorizonatly, bool movesVertically, int range);
+	Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color);
 
 };
 

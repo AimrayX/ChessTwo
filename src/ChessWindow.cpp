@@ -26,7 +26,12 @@ void ChessWindow::run() {
             mWindow.draw(rect);
             //std::cout << "Position of rectangle printed: " << rect.getPosition().x << " size: " << rect.getSize().x << std::endl;
         }
-        mWindow.draw(board.rook1.mSprite);
+
+        for (size_t i = 0; i < board.mPieces.size(); i++)
+        {
+            mWindow.draw(board.mPieces[i]->mSprite);
+        }
+
         mWindow.display();
     }
 }

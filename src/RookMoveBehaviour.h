@@ -1,10 +1,12 @@
 #pragma once
-#include "IMoveBehavior.h"
+#include "IMoveBehaviour.h"
 
-class RookMoveBehaviour : public IMoveBehavior
-{
+class RookMoveBehaviour : public IMoveBehaviour {
+    
 private:
-    long long getValidMoves();
+
+    long long getValidMovesBitmap() const override;
+
 public:
     
 };

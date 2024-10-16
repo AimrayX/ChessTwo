@@ -1,31 +1,30 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <vector>
+
 #include "Piece.h"
 #include "Rook.h"
+#include "RookMoveBehaviour.h"
+#include "Context.h"
 
-class Board
-{
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <memory>
+
+
+class Board {
+
 private:
 	
 
 public:
+
+
 	float mWidth;
 	float mHeight;
-	
-
 	std::vector<sf::RectangleShape> mBoardTexture;
-	Rook rook1b;
-	Rook rook2b;
-	Rook rook1w;
-	Rook rook2w;
 	void updateBoardTexture(sf::Vector2u size);
-	void initalizeStartingPosition();
 	Board(sf::Vector2u windowSize);
-	
-	
-	std::vector<Piece *> mPieces;
-	
-	
-};
+	std::vector<std::unique_ptr<Piece>> mPieces;
+	Context context(std::unique_ptr<RookMoveBehaviour>());
+
+};	
 
