@@ -5,17 +5,20 @@
 #include "Board.h"
 
 
-class ChessWindow
+class Renderer
 {
 private:
 	std::string mWindowName;
+public:
 	sf::Vector2u mWindowSize;
+	std::vector<sf::Sprite> mPiecesSprites;
+private:
 	sf::RenderWindow mWindow;
 	Board board;
+	
 
 public:
-	ChessWindow(unsigned int width, unsigned int height, std::string windowName);
-	
+	Renderer(unsigned int width, unsigned int height, std::string windowName);
 	void run();
 private:
 	

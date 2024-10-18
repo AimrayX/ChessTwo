@@ -10,7 +10,6 @@ protected:
 	int mTextureHeight;
 	int mTexturePositionX;
 	int mTexturePositionY;
- 	sf::Vector2f mPosition;
 	sf::Texture mTexture;
 	
 public:

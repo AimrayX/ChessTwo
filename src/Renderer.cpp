@@ -1,12 +1,12 @@
-#include "ChessWindow.h"
+#include "Renderer.h"
 #include <iostream>
 
-ChessWindow::ChessWindow(unsigned int w, unsigned int h, std::string windowName)
-    : mWindowName {windowName}, mWindowSize(w, h), mWindow(sf::VideoMode(w, h), windowName), board(mWindowSize) {
+Renderer::Renderer(unsigned int w, unsigned int h, std::string windowName)
+    : mWindowName {windowName}, mWindowSize(w, h), mPiecesSprites{},  mWindow(sf::VideoMode(w, h), windowName), board(mWindowSize) {
     run();
 }
 
-void ChessWindow::run() {
+void Renderer::run() {
     while (mWindow.isOpen())
     {
         sf::Event event;
@@ -27,16 +27,16 @@ void ChessWindow::run() {
             //std::cout << "Position of rectangle printed: " << rect.getPosition().x << " size: " << rect.getSize().x << std::endl;
         }
 
-        for (size_t i = 0; i < board.mPieces.size(); i++)
+        for (size_t i = 0; i < mPiecesSprites.size(); i++)
         {
-            mWindow.draw(board.mPieces[i]->mSprite);
+            mWindow.draw(mPiecesSprites[i]);
         }
 
         mWindow.display();
     }
 }
 
-void ChessWindow::updateView() {
+void Renderer::updateView() {
     sf::Vector2u windowSize = mWindow.getSize();
     unsigned int minDimension = std::min(windowSize.x, windowSize.y);
     sf::FloatRect viewport(0.f, 0.f, 1.f, 1.f);

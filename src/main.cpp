@@ -1,8 +1,8 @@
-#include "ChessWindow.h"
+#include "Game.h"
 
 int main()
 {
-    ChessWindow chessWindow(1000, 1000, "Test");  
+    Game game;
 
     return 0;
 }

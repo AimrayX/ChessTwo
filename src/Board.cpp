@@ -3,12 +3,9 @@
 #include <iostream>
 
 Board::Board(sf::Vector2u windowSize)
-    : mWidth{}, mHeight{}, mBoardTexture(), mPieces {} {
+    : mWidth{}, mHeight{}, mBoardTexture() {
 
-    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), true)); // color true or false as needed
-    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), true));
-    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), false));
-    mPieces.push_back(std::make_unique<Rook>(static_cast<float>(std::min(windowSize.x, windowSize.y)), false));
+    
 
     std::cout << "constructor called : " << windowSize.x << std::endl;
     updateBoardTexture(windowSize);
