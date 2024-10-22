@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include <array>
 #include <memory>
 
 
@@ -14,8 +14,9 @@ public:
 
 	float mWidth;
 	float mHeight;
-	std::vector<sf::RectangleShape> mBoardTexture;
-	void updateBoardTexture(sf::Vector2u size);
+	float mBoardSize;
+	std::array<std::array<sf::RectangleShape, 8>, 8> mBoardRectangles;
+	void updateBoard(sf::Vector2u size);
 	Board(sf::Vector2u windowSize);
 	
 

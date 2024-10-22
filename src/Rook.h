@@ -10,6 +10,6 @@ private:
 
 public: 
 
-    Rook(float boardSize, bool color);
+    Rook(float boardSize, bool color, sf::RectangleShape &initalSquare);
 };
 

@@ -2,25 +2,29 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <memory>
 #include "Board.h"
+#include "Piece.h"
 
 
 class Renderer
 {
 private:
 	std::string mWindowName;
+	
 public:
 	sf::Vector2u mWindowSize;
-	std::vector<sf::Sprite> mPiecesSprites;
 private:
+	std::array<std::array<sf::RectangleShape, 8>, 8> &mBoardRectangles;
+	std::vector<sf::Sprite> mPieceSprites;
+	void scalePieces(float boardSize);
+public:	
 	sf::RenderWindow mWindow;
-	Board board;
-	
+	void updatePieceSprites(float boardsize, std::vector<std::shared_ptr<Piece>> &pieces);
+	void draw();
 
 public:
-	Renderer(unsigned int width, unsigned int height, std::string windowName);
-	void run();
-private:
+	Renderer(unsigned int width, unsigned int height, std::string windowName, std::array<std::array<sf::RectangleShape, 8>, 8> &BoardRectangles);
 	
 	void updateView();
 };
