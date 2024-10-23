@@ -21,6 +21,7 @@ private:
 public:	
 	sf::RenderWindow mWindow;
 	void updatePieceSprites(float boardsize, std::vector<std::shared_ptr<Piece>> &pieces);
+	void highlightPiece();
 	void draw();
 
 public:

@@ -2,10 +2,7 @@
 #include "Renderer.h"
 #include "Piece.h"
 #include "Rook.h"
-#include "RookMoveBehaviour.h"
-#include "Context.h"
 #include "Board.h"
-
 #include <SFML/Window/Mouse.hpp>
 
 class Game {
@@ -15,9 +12,10 @@ class Game {
         std::shared_ptr<Piece> activePiece;
         Renderer renderer;
         bool dragging;
-        Context context(std::unique_ptr<RookMoveBehaviour>());
+        sf::Vector2f getMousePosition();
         sf::Vector2f getMousePosition(sf::Event&);
         std::shared_ptr<Piece> getPieceOnPosition(sf::Vector2f);
+        sf::RectangleShape &getSquareOnPosition(sf::Vector2f);
         void run();
         void dragPiece();
         

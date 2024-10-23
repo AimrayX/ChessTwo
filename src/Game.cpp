@@ -2,11 +2,11 @@
 #include "iostream"
 
 Game::Game() 
-    : board(sf::Vector2u(800, 800)), mPieces{}, activePiece{}, renderer(800, 800, "Chess", board.mBoardRectangles), dragging {false} {
-    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][0]));
-    mPieces.push_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][0]));
-    mPieces.push_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][7]));
-    mPieces.push_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][7]));
+    : board(sf::Vector2u(700, 700)), mPieces{}, activePiece{}, renderer(700, 700, "Chess", board.mBoardRectangles), dragging {false} {
+    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][3]));
+    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][0]));
+    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][7]));
+    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][7]));
     //load menu()
     run();
 }
@@ -29,39 +29,38 @@ void Game::run() {
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 std::cout << "clicked" << std::endl;
-                
-                
-                if (activePiece != nullptr) {
-                    dragging = true;
+
+                if (activePiece == nullptr)
+                {
+                    activePiece = getPieceOnPosition(getMousePosition());
                 }
                 
             }
             if (event.type == sf::Event::MouseButtonReleased)
             {
-                activePiece = getPieceOnPosition(getMousePosition(event));
-                dragging = false;
-                
 
                 if (activePiece != nullptr)
                 {
-                    activePiece->mSprite.setPosition(activePiece->currentSquare.getPosition());
-                    if (activePiece == getPieceOnPosition(getMousePosition(event)))
+                    
+                    if (activePiece == getPieceOnPosition(getMousePosition()))
                     {
+                        //activePiece->mSprite.setPosition(activePiece->currentSquare.getPosition());
                         std::cout << "piece selected" << std::endl;
                     } else
                     {
-                        //check for valid square and if not then set back to original position otherwise
-                        std::cout << "piece dragged" << std::endl;
-
+                        //check for valid square and if not then set back to original position otherwise                     
+                        activePiece->move(getSquareOnPosition(getMousePosition()));
+                        renderer.updatePieceSprites(board.mBoardSize, mPieces);
+                        //activePiece->movePiece();
+                        
+                        std::cout << "piece moved" << std::endl;
+                        activePiece = nullptr;
                     }
                 
                 } else
                 {
                     std::cout << "nothing selected" << std::endl;
                 } 
-            }
-            if (dragging) {
-                dragPiece();
             }
         }
         
@@ -75,17 +74,26 @@ sf::Vector2f Game::getMousePosition(sf::Event &event) {
     return sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 }
 
+sf::Vector2f Game::getMousePosition() {
+    if (renderer.mWindowSize.x > renderer.mWindowSize.y) {
+        return sf::Vector2f(static_cast<float>(sf::Mouse::getPosition(renderer.mWindow).x) - (static_cast<float>(renderer.mWindowSize.x) - board.mBoardSize) / 2.0f, static_cast<float>(sf::Mouse::getPosition(renderer.mWindow).y));
+    } else {
+        return sf::Vector2f(static_cast<float>(sf::Mouse::getPosition(renderer.mWindow).x), static_cast<float>(sf::Mouse::getPosition(renderer.mWindow).y) - (static_cast<float>(renderer.mWindowSize.y) - board.mBoardSize) / 2.0f);
+    }
+    
+}
+
 std::shared_ptr<Piece> Game::getPieceOnPosition(sf::Vector2f mousePosition) {
     //float inset {board.mBoardSize / 8.0f - (board.mBoardSize / 20.0f)};
-    for (auto &i : mPieces) {
+    for (auto &piece : mPieces) {
 
-        if (   (mousePosition.x > i->currentSquare.getPosition().x) 
-            && (mousePosition.y > i->currentSquare.getPosition().y)
-            && (mousePosition.x < (i->currentSquare.getPosition().x + i->currentSquare.getSize().x)) 
-            && (mousePosition.y < (i->currentSquare.getPosition().y + i->currentSquare.getSize().y))) {
+        if (   (mousePosition.x > piece->mCurrentSquare.getPosition().x) 
+            && (mousePosition.y > piece->mCurrentSquare.getPosition().y)
+            && (mousePosition.x < (piece->mCurrentSquare.getPosition().x + piece->mCurrentSquare.getSize().x)) 
+            && (mousePosition.y < (piece->mCurrentSquare.getPosition().y + piece->mCurrentSquare.getSize().y))) {
 
                 std::cout << "clicked on piece" << std::endl;
-                return i;
+                return piece;
 
             }
 
@@ -93,6 +101,28 @@ std::shared_ptr<Piece> Game::getPieceOnPosition(sf::Vector2f mousePosition) {
 
     return nullptr;
     
+}
+
+sf::RectangleShape &Game::getSquareOnPosition(sf::Vector2f mousePosition) {
+
+    for (auto &i : board.mBoardRectangles) {
+        
+        for (auto &rect : i) {
+            if (   (mousePosition.x > rect.getPosition().x) 
+            && (mousePosition.y > rect.getPosition().y)
+            && (mousePosition.x < (rect.getPosition().x + rect.getSize().x)) 
+            && (mousePosition.y < (rect.getPosition().y + rect.getSize().y))) {
+
+                std::cout << "clicked on square " << rect.getPosition().x << "x * " << rect.getPosition().y  << "y" << std::endl;
+                return rect;
+
+            }
+        }
+        
+
+    }
+
+    return board.mBoardRectangles[3][3];
 }
 
 void Game::dragPiece() {

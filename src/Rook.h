@@ -7,9 +7,10 @@
 class Rook : public Piece
 {
 private:
-
+    long long rookBitmap;
 public: 
-
-    Rook(float boardSize, bool color, sf::RectangleShape &initalSquare);
+    long long getMovesBitmap(const long long &enemyPieces, const long long &friendlyPieces) override;
+    long long getRookBitmap();
+    Rook(float boardSize, bool color, sf::RectangleShape initalSquare);
 };
 
