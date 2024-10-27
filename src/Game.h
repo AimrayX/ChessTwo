@@ -12,6 +12,8 @@ class Game {
         std::shared_ptr<Piece> activePiece;
         Renderer renderer;
         bool dragging;
+        unsigned long long bitmapWhitePieces;
+        unsigned long long bitmapBlackPieces;
         sf::Vector2f getMousePosition();
         sf::Vector2f getMousePosition(sf::Event&);
         std::shared_ptr<Piece> getPieceOnPosition(sf::Vector2f);

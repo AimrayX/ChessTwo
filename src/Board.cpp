@@ -28,7 +28,7 @@ void Board::updateBoard(sf::Vector2u windowSize) {
                 rectangle.setFillColor(sf::Color(196, 140, 108));
             }
             rectangle.setPosition(static_cast<float>(j) * (mWidth / 8.0f), static_cast<float>(i) * (mHeight / 8.0f));
-            mBoardRectangles[j][i] = rectangle;
+            mBoardRectangles[i][j] = rectangle;
             
             //std::cout << "added rectangle: " << i+j << " " << rectangle.getSize().x << " x " 
             //<< rectangle.getSize().y << " vector size: " << mBoardTexture.size() << std::endl;

@@ -1,31 +1,35 @@
 #include "Piece.h"
+#include "SearchAlgos.h"
 #include <iostream>
 
 Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare)
-	: mTextureFile {"../assets/pieces.png"}, mTextureWidth {334}, mTextureHeight {334}, 
-	  mTexturePositionX {texturePositionX}, mTexturePositionY {texturePositionY}, mTexture {}, 
-	  mSprite {}, mValue {value}, mColor {color}, mCurrentSquare {initialSquare}, bitMapValidSquares{} {
+	: mTextureFile{"../assets/pieces.png"}, mTextureWidth{334}, mTextureHeight{334},
+	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mTexture{},
+	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, bitmapValidSquares{}, bitmapCurrentSquare{}
+{
 
-	//std::cout << "loaded with exit code: " << mTexture.loadFromFile(mTextureFile) << std::endl;
-	
+	// std::cout << "loaded with exit code: " << mTexture.loadFromFile(mTextureFile) << std::endl;
+
 	if (!mTexture.loadFromFile(mTextureFile))
 	{
 		mTexture.loadFromFile("assets/pieces.png");
 	}
-	
 
 	mSprite.setTexture(mTexture);
 	mSprite.setTextureRect(sf::IntRect(mTexturePositionX, mTexturePositionY, mTextureWidth, mTextureHeight));
-	mSprite.setScale((boardSize / 8.0f) / 334.0f , (boardSize / 8.0f) / 334.0f);
+	mSprite.setScale((boardSize / 8.0f) / 334.0f, (boardSize / 8.0f) / 334.0f);
 	mSprite.setPosition(mCurrentSquare.getPosition());
+}
+
+Piece::~Piece(){
 
 }
 
-void Piece::setCurrentSquare(sf::RectangleShape &square) {
-	mCurrentSquare = square;
-}
+void Piece::move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare)
+{
 
-void Piece::move(sf::RectangleShape &square, long long enemyPieces, long long friendlyPieces) {
-	setCurrentSquare(square);
-	getMovesBitmap(enemyPieces, friendlyPieces);
+	if ((calcMovesBitmap(mPieces, boardRectangles) & SearchAlgo::getSquareBitmap(targetSquare)) != 0)
+	{
+		mCurrentSquare = targetSquare;
+	}
 }

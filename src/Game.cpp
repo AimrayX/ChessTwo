@@ -2,7 +2,9 @@
 #include "iostream"
 
 Game::Game() 
-    : board(sf::Vector2u(700, 700)), mPieces{}, activePiece{}, renderer(700, 700, "Chess", board.mBoardRectangles), dragging {false} {
+    : board(sf::Vector2u(700, 700)), mPieces{}, activePiece{}, renderer(700, 700, "Chess", board.mBoardRectangles), dragging {false}, 
+      bitmapWhitePieces{0b0000000000000000000000000000000000000000000000001111111111111111}, 
+      bitmapBlackPieces{0b1111111111111111000000000000000000000000000000000000000000000000} {
     mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][3]));
     mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][0]));
     mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][7]));
@@ -49,9 +51,8 @@ void Game::run() {
                     } else
                     {
                         //check for valid square and if not then set back to original position otherwise                     
-                        activePiece->move(getSquareOnPosition(getMousePosition()));
+                        activePiece->move(mPieces, board.mBoardRectangles, getSquareOnPosition(getMousePosition()));
                         renderer.updatePieceSprites(board.mBoardSize, mPieces);
-                        //activePiece->movePiece();
                         
                         std::cout << "piece moved" << std::endl;
                         activePiece = nullptr;
