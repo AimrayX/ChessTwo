@@ -19,17 +19,40 @@ Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int va
 	mSprite.setTextureRect(sf::IntRect(mTexturePositionX, mTexturePositionY, mTextureWidth, mTextureHeight));
 	mSprite.setScale((boardSize / 8.0f) / 334.0f, (boardSize / 8.0f) / 334.0f);
 	mSprite.setPosition(mCurrentSquare.getPosition());
+
 }
 
 Piece::~Piece(){
 
 }
 
-void Piece::move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare)
+void Piece::calcBitmap(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) {
+	bitmapValidSquares = calcMovesBitmap(mPieces, boardRectangles, mColor);
+	bitmapCurrentSquare = SearchAlgo::getSquareBitmap(mCurrentSquare);
+}
+
+std::pair<bool, std::shared_ptr<Piece>> Piece::move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare)
 {
 
-	if ((calcMovesBitmap(mPieces, boardRectangles) & SearchAlgo::getSquareBitmap(targetSquare)) != 0)
+	if ((calcMovesBitmap(mPieces, boardRectangles, mColor) & SearchAlgo::getSquareBitmap(targetSquare)) != 0)
 	{
+		std::cout << "moved Piece\n";
+		
+		for (auto &piece : mPieces)
+		{
+			if ((piece->bitmapCurrentSquare & SearchAlgo::getSquareBitmap(targetSquare)) != 0)
+			{
+				std::cout << "captured piece\n";
+				mCurrentSquare = targetSquare;
+				return std::make_pair(0, piece);
+			}
+			
+		}
+		std::cout << "nothing captured\n";
 		mCurrentSquare = targetSquare;
+		return std::make_pair(0, nullptr);
 	}
+
+	std::cout << "not a valid move\n";
+	return std::make_pair(1, nullptr);
 }

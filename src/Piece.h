@@ -26,7 +26,11 @@ public:
 
 	virtual ~Piece();
 
-	void move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare);
+	std::pair<bool, std::shared_ptr<Piece>> move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare);
 
-	virtual unsigned long long calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) = 0;
+	void calcBitmap(std::vector<std::shared_ptr<Piece>> &mPieces, 
+					std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles);
+
+	virtual unsigned long long calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
+											   std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, bool &color) = 0;
 };

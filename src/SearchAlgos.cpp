@@ -9,7 +9,7 @@ namespace SearchAlgo
 {
     unsigned long long getHorizontalMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces,
                                                 const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles,
-                                                const sf::RectangleShape &currentSquare)
+                                                const sf::RectangleShape &currentSquare, bool &color)
     {
         std::array<std::array<bool, 8>, 8> validSquares = {};
 
@@ -24,7 +24,16 @@ namespace SearchAlgo
                 if (convertV2fToV2u(boardRectangles[position.y][i+1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
                 {
                     std::cout << "match found" << std::endl;
-                    validSquares[position.y][i+1] = 0;
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y][i+1] = 0;
+                    }
+                    else 
+                    {
+                        validSquares[position.y][i+1] = 1;
+                    }
+                    
+                    
                     i = 7;
                     break;
                 }
@@ -41,7 +50,16 @@ namespace SearchAlgo
                 if (convertV2fToV2u(boardRectangles[position.y][i-1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
                 {
                     std::cout << "match found" << std::endl;
-                    validSquares[position.y][i-1] = 0;
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y][i-1] = 0;
+                    }
+                    else
+                    {
+                        validSquares[position.y][i-1] = 1;
+                    }
+                    
+                    
                     i = 1;
                     break;
                 }
@@ -56,7 +74,15 @@ namespace SearchAlgo
                 if (convertV2fToV2u(boardRectangles[i+1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
                 {
                     std::cout << "match found" << std::endl;
-                    validSquares[i+1][position.x] = 0;
+                    if (piece->mColor == color)
+                    {
+                        validSquares[i+1][position.x] = 0;
+                    }
+                    else
+                    {
+                        validSquares[i+1][position.x] = 1;
+                    }
+                    
                     i = 7;
                     break;
                 }
@@ -71,7 +97,15 @@ namespace SearchAlgo
                 if (convertV2fToV2u(boardRectangles[i-1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
                 {
                     std::cout << "match found" << std::endl;
-                    validSquares[i-1][position.x] = 0;
+                    if (piece->mColor == color)
+                    {
+                        validSquares[i-1][position.x] = 0;
+                    }
+                    else
+                    {
+                        validSquares[i-1][position.x] = 1;
+                    }
+                    
                     i = 1;
                     break;
                 }
@@ -107,10 +141,10 @@ namespace SearchAlgo
     }
 
 
-    unsigned long long getSquareBitmap(const sf::RectangleShape &currentSquare) 
+    unsigned long long getSquareBitmap(const sf::RectangleShape &square) 
     {
-        sf::Vector2u position(static_cast<unsigned int>(std::round(currentSquare.getPosition().x / currentSquare.getSize().x)), 
-                              static_cast<unsigned int>(std::round(currentSquare.getPosition().y / currentSquare.getSize().y)));
+        sf::Vector2u position(static_cast<unsigned int>(std::round(square.getPosition().x / square.getSize().x)), 
+                              static_cast<unsigned int>(std::round(square.getPosition().y / square.getSize().y)));
 
         return 0b1000000000000000000000000000000000000000000000000000000000000000ULL >> (position.y * 8 + position.x);
     }

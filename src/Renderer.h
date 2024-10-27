@@ -19,8 +19,8 @@ private:
 	void scalePieces(float boardSize);
 public:	
 	sf::RenderWindow mWindow;
-	void updatePieceSprites(float boardsize, std::vector<std::shared_ptr<Piece>> &pieces);
-	void highlightPiece();
+	void updatePieceSprites(float boardSize, std::vector<std::shared_ptr<Piece>> &pieces);
+	void highlightValidSquares(const std::shared_ptr<Piece> &piece);
 	void draw();
 
 public:

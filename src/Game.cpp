@@ -1,5 +1,7 @@
 #include "Game.h"
-#include "iostream"
+#include <iostream>
+#include <iomanip>
+#include <bitset>
 
 Game::Game() 
     : board(sf::Vector2u(700, 700)), mPieces{}, activePiece{}, renderer(700, 700, "Chess", board.mBoardRectangles), dragging {false}, 
@@ -10,6 +12,11 @@ Game::Game()
     mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][7]));
     mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][7]));
     //load menu()
+    for (auto &piece : mPieces)
+    {
+        piece->calcBitmap(mPieces, board.mBoardRectangles);
+    }
+    
     run();
 }
 
@@ -48,14 +55,41 @@ void Game::run() {
                     {
                         //activePiece->mSprite.setPosition(activePiece->currentSquare.getPosition());
                         std::cout << "piece selected" << std::endl;
+                        /*
+                        if (activePiece != nullptr)
+                        {
+                            renderer.highlightValidSquares(activePiece);
+                        }
+                        */
                     } else
-                    {
-                        //check for valid square and if not then set back to original position otherwise                     
-                        activePiece->move(mPieces, board.mBoardRectangles, getSquareOnPosition(getMousePosition()));
+                    {              
+                        std::pair<bool, std::shared_ptr<Piece>> moveReturn {activePiece->move(mPieces, board.mBoardRectangles, 
+                                                              getSquareOnPosition(getMousePosition()))};
+
+                        if (moveReturn.first != 1 && moveReturn.second != nullptr)
+                        {
+                            for (auto it = mPieces.begin(); it != mPieces.end(); it++)
+                            {
+                                if (it->get() == moveReturn.second.get())
+                                {
+                                    it = mPieces.erase(it);
+                                    activePiece = nullptr;
+                                    break;
+                                }
+                                
+                            }
+                            updateAllPiecesBitmaps();
+                            
+                        }
+                        else if (!moveReturn.first)
+                        {
+                            updateAllPiecesBitmaps();
+                            activePiece = nullptr;
+                        }
+
+                        
                         renderer.updatePieceSprites(board.mBoardSize, mPieces);
                         
-                        std::cout << "piece moved" << std::endl;
-                        activePiece = nullptr;
                     }
                 
                 } else
@@ -129,4 +163,26 @@ sf::RectangleShape &Game::getSquareOnPosition(sf::Vector2f mousePosition) {
 void Game::dragPiece() {
     std::cout << "dragging" << std::endl;
     activePiece->mSprite.setPosition(sf::Vector2f(sf::Mouse::getPosition(renderer.mWindow)));
+}
+
+void Game::updateAllPiecesBitmaps() {
+    for (auto &piece : mPieces)
+    {
+        piece->calcBitmap(mPieces, board.mBoardRectangles);
+    }
+}
+
+void Game::getPositionCords() {
+    for (auto &piece : mPieces)
+    {
+        std::cout << piece->mCurrentSquare.getPosition().x << "x x " << piece->mCurrentSquare.getPosition().y << "y : " 
+                  << piece->mSprite.getPosition().x << "x x " << piece->mSprite.getPosition().y << "y" << std::endl;
+    }
+
+    for (auto &piece : mPieces)
+    {
+        std::cout << std::setw(8);
+        std::cout << std::bitset<64>(piece->bitmapValidSquares) << "\n\n" << std::endl;
+    }
+
 }

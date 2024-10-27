@@ -3,6 +3,7 @@
 #include "Piece.h"
 #include "Rook.h"
 #include "Board.h"
+#include <utility>
 #include <SFML/Window/Mouse.hpp>
 
 class Game {
@@ -20,6 +21,8 @@ class Game {
         sf::RectangleShape &getSquareOnPosition(sf::Vector2f);
         void run();
         void dragPiece();
+        void updateAllPiecesBitmaps();
+        void getPositionCords();
         
 
     public:
