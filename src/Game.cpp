@@ -1,4 +1,9 @@
 #include "Game.h"
+#include "Piece.h"
+#include "Rook.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "Queen.h"
 #include <iostream>
 #include <iomanip>
 #include <bitset>
@@ -7,10 +12,21 @@ Game::Game()
     : board(sf::Vector2u(700, 700)), mPieces{}, activePiece{}, renderer(700, 700, "Chess", board.mBoardRectangles), dragging {false}, 
       bitmapWhitePieces{0b0000000000000000000000000000000000000000000000001111111111111111}, 
       bitmapBlackPieces{0b1111111111111111000000000000000000000000000000000000000000000000} {
-    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][3]));
-    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][0]));
-    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][7]));
-    mPieces.emplace_back(std::make_shared<Rook>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][7]));
+    mPieces.emplace_back(std::make_shared<Rook>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][0]));
+    mPieces.emplace_back(std::make_shared<Rook>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][7]));
+    mPieces.emplace_back(std::make_shared<Bishop>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][2]));
+    mPieces.emplace_back(std::make_shared<Bishop>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][5]));
+    mPieces.emplace_back(std::make_shared<Queen> (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][3]));
+    mPieces.emplace_back(std::make_shared<Knight>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][6]));
+    mPieces.emplace_back(std::make_shared<Knight>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[0][1]));
+    mPieces.emplace_back(std::make_shared<Rook>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][0]));
+    mPieces.emplace_back(std::make_shared<Rook>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][7]));
+    mPieces.emplace_back(std::make_shared<Bishop>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][2]));
+    mPieces.emplace_back(std::make_shared<Bishop>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][5]));
+    mPieces.emplace_back(std::make_shared<Queen> (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][4]));
+    mPieces.emplace_back(std::make_shared<Knight>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][6]));
+    mPieces.emplace_back(std::make_shared<Knight>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[7][1]));
+    
     //load menu()
     for (auto &piece : mPieces)
     {
@@ -55,16 +71,18 @@ void Game::run() {
                     {
                         //activePiece->mSprite.setPosition(activePiece->currentSquare.getPosition());
                         std::cout << "piece selected" << std::endl;
-                        /*
+                        
                         if (activePiece != nullptr)
                         {
                             renderer.highlightValidSquares(activePiece);
                         }
-                        */
+                        
                     } else
                     {              
                         std::pair<bool, std::shared_ptr<Piece>> moveReturn {activePiece->move(mPieces, board.mBoardRectangles, 
                                                               getSquareOnPosition(getMousePosition()))};
+                        
+                        renderer.deHighlightValidSquares(activePiece);
 
                         if (moveReturn.first != 1 && moveReturn.second != nullptr)
                         {
@@ -86,7 +104,7 @@ void Game::run() {
                             updateAllPiecesBitmaps();
                             activePiece = nullptr;
                         }
-
+                        activePiece = nullptr;
                         
                         renderer.updatePieceSprites(board.mBoardSize, mPieces);
                         

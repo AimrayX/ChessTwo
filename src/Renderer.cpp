@@ -61,12 +61,25 @@ void Renderer::highlightValidSquares(const std::shared_ptr<Piece> &piece) {
         if((piece->bitmapValidSquares >> i) & 1)
         {
             //mBoardRectangles[i/8][i%8].setOutlineColor(sf::Color(128, 45, 43));
-            mBoardRectangles[7-i/8][7-i%8].setOutlineThickness(-5.0f);
+            mBoardRectangles[7-i/8][7-i%8].setOutlineThickness(-3.0f);
             mBoardRectangles[7-i/8][7-i%8].setOutlineColor(sf::Color(128, 45, 43, 255));
         }
     }
     
 }
+
+void Renderer::deHighlightValidSquares(const std::shared_ptr<Piece> &piece) {
+    for (size_t i = 0; i < 64; i++)
+    {
+        if((piece->bitmapValidSquares >> i) & 1)
+        {
+            //mBoardRectangles[i/8][i%8].setOutlineColor(sf::Color(128, 45, 43));
+            mBoardRectangles[7-i/8][7-i%8].setOutlineThickness(0.0f);
+            mBoardRectangles[7-i/8][7-i%8].setOutlineColor(sf::Color(128, 45, 43, 0));
+        }
+    }
+}
+
 
 void Renderer::draw() {
 

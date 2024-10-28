@@ -21,6 +21,7 @@ public:
 	sf::RenderWindow mWindow;
 	void updatePieceSprites(float boardSize, std::vector<std::shared_ptr<Piece>> &pieces);
 	void highlightValidSquares(const std::shared_ptr<Piece> &piece);
+	void deHighlightValidSquares(const std::shared_ptr<Piece> &piece);
 	void draw();
 
 public:

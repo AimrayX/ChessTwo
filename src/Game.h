@@ -1,7 +1,5 @@
 #pragma once
 #include "Renderer.h"
-#include "Piece.h"
-#include "Rook.h"
 #include "Board.h"
 #include <utility>
 #include <SFML/Window/Mouse.hpp>
