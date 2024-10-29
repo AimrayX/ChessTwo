@@ -5,11 +5,11 @@
 #include <iomanip>
 #include <bitset>
 
-namespace SearchAlgo
+namespace SearchAlgos
 {
     unsigned long long getHorizontalMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces,
                                                 const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles,
-                                                const sf::RectangleShape &currentSquare, bool &color)
+                                                const sf::RectangleShape &currentSquare, const bool &color)
     {
         std::array<std::array<bool, 8>, 8> validSquares = {};
 
@@ -117,7 +117,7 @@ namespace SearchAlgo
 
     unsigned long long getDiagonalMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces,
                                               const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles,
-                                              const sf::RectangleShape &currentSquare, bool &color)
+                                              const sf::RectangleShape &currentSquare, const bool &color)
     {
         std::array<std::array<bool, 8>, 8> validSquares = {};
 
@@ -226,7 +226,7 @@ namespace SearchAlgo
 
     unsigned long long getKnightMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces,
                                             const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles,
-                                            const sf::RectangleShape &currentSquare, bool &color)
+                                            const sf::RectangleShape &currentSquare, const bool &color)
     {
         std::array<std::array<bool, 8>, 8> validSquares = {};
 
@@ -384,6 +384,223 @@ namespace SearchAlgo
         return convert2DArrayToBitmap(validSquares);
     }
 
+    unsigned long long getKingMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces,
+                                          const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles,
+                                          const sf::RectangleShape &currentSquare, const bool &color) {
+        std::array<std::array<bool, 8>, 8> validSquares = {};
+
+        sf::Vector2u position(static_cast<unsigned int>(std::round(currentSquare.getPosition().x / currentSquare.getSize().x)),
+                              static_cast<unsigned int>(std::round(currentSquare.getPosition().y / currentSquare.getSize().y)));
+
+        if (position.y + 1 < 8 && position.x + 1 < 8)
+        {
+            validSquares[position.y + 1][position.x + 1] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y + 1][position.x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y + 1][position.x + 1] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y + 1][position.x + 1] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y + 1][position.x + 1], pieces))
+                {
+                    validSquares[position.y + 1][position.x + 1] = 0;
+                }
+            }
+        }
+
+        if (position.x + 1 < 8)
+        {
+            validSquares[position.y][position.x + 1] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y][position.x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y][position.x + 1] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y][position.x + 1] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y][position.x + 1], pieces))
+                {
+                    validSquares[position.y][position.x + 1] = 0;
+                }
+            }
+        }
+
+        if (position.y > 0 && position.x + 1 < 8)
+        {
+            validSquares[position.y - 1][position.x + 1] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y - 1][position.x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y - 1][position.x + 1] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y - 1][position.x + 1] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y - 1][position.x + 1], pieces))
+                {
+                    validSquares[position.y - 1][position.x + 1] = 0;
+                }
+            }
+        }
+
+        if (position.y > 0)
+        {
+            validSquares[position.y - 1][position.x] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y - 1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y - 1][position.x] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y - 1][position.x] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y - 1][position.x], pieces))
+                {
+                    validSquares[position.y - 1][position.x] = 0;
+                }
+            }
+        }
+
+        if (position.y > 0 && position.x > 0)
+        {
+            validSquares[position.y - 1][position.x - 1] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y - 1][position.x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y - 1][position.x - 1] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y - 1][position.x - 1] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y - 1][position.x - 1], pieces))
+                {
+                    validSquares[position.y - 1][position.x - 1] = 0;
+                }
+            }
+        }
+
+        if (position.x > 0)
+        {
+            validSquares[position.y][position.x - 1] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y][position.x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y][position.x - 1] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y][position.x - 1] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y][position.x - 1], pieces))
+                {
+                    validSquares[position.y][position.x - 1] = 0;
+                }
+            }
+        }
+
+        if (position.y + 1 < 8 && position.x > 0)
+        {
+            validSquares[position.y + 1][position.x - 1] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y + 1][position.x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y + 1][position.x - 1] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y + 1][position.x - 1] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y + 1][position.x - 1], pieces))
+                {
+                    validSquares[position.y + 1][position.x - 1] = 0;
+                }
+            }
+        }
+
+        if (position.y + 1 < 8)
+        {
+            validSquares[position.y + 1][position.x] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y + 1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+
+                    if (piece->mColor == color)
+                    {
+                        validSquares[position.y + 1][position.x] = 0;
+                        break;
+                    }
+                }
+            }
+            if (validSquares[position.y + 1][position.x] != 0)
+            {
+                if (checkIfSquareIsAttacked(color, boardRectangles[position.y + 1][position.x], pieces))
+                {
+                    validSquares[position.y + 1][position.x] = 0;
+                }
+            }
+            
+        }
+
+        displayValidSquares(validSquares);
+
+        std::cout << position.x << "x" << position.y << std::endl;
+
+        return convert2DArrayToBitmap(validSquares);
+    
+    }
+
     unsigned long long getSquareBitmap(const sf::RectangleShape &square)
     {
         sf::Vector2u position(static_cast<unsigned int>(std::round(square.getPosition().x / square.getSize().x)),
@@ -421,6 +638,21 @@ namespace SearchAlgo
             }
         }
         return bitmap;
+    }
+
+    bool checkIfSquareIsAttacked(const bool &color ,const sf::RectangleShape &boardRectangle, 
+                                 const std::vector<std::shared_ptr<Piece>> &pieces) 
+    {
+        for (auto &piece : pieces)
+        {
+            if (piece->mColor != color && (getSquareBitmap(boardRectangle) & piece->bitmapValidSquares) != 0)
+                {
+                    
+                    std::cout << "King can't move there. Square under attack!" << std::endl;
+                    return 1;
+                }
+        }
+        return 0;
     }
 
 }

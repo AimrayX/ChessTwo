@@ -10,6 +10,6 @@ Rook::Rook(float boardSize, bool color, sf::RectangleShape initalSquare)
 unsigned long long Rook::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
 										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, bool &color)
 {
-	return SearchAlgo::getHorizontalMovesBitmap(pieces, boardRectangles, mCurrentSquare, color);
+	return SearchAlgos::getHorizontalMovesBitmap(pieces, boardRectangles, mCurrentSquare, color);
 }
 

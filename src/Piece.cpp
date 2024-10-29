@@ -28,19 +28,19 @@ Piece::~Piece(){
 
 void Piece::calcBitmap(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) {
 	bitmapValidSquares = calcMovesBitmap(mPieces, boardRectangles, mColor);
-	bitmapCurrentSquare = SearchAlgo::getSquareBitmap(mCurrentSquare);
+	bitmapCurrentSquare = SearchAlgos::getSquareBitmap(mCurrentSquare);
 }
 
 std::pair<bool, std::shared_ptr<Piece>> Piece::move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare)
 {
 
-	if ((calcMovesBitmap(mPieces, boardRectangles, mColor) & SearchAlgo::getSquareBitmap(targetSquare)) != 0)
+	if ((calcMovesBitmap(mPieces, boardRectangles, mColor) & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
 	{
 		std::cout << "moved Piece\n";
 		
 		for (auto &piece : mPieces)
 		{
-			if ((piece->bitmapCurrentSquare & SearchAlgo::getSquareBitmap(targetSquare)) != 0)
+			if ((piece->bitmapCurrentSquare & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
 			{
 				std::cout << "captured piece\n";
 				mCurrentSquare = targetSquare;

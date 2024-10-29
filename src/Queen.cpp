@@ -10,5 +10,5 @@ Queen::Queen(float boardSize, bool color, sf::RectangleShape initalSquare)
 unsigned long long Queen::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
 										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, bool &color)
 {
-	return SearchAlgo::getDiagonalMovesBitmap(pieces, boardRectangles, mCurrentSquare, color) | SearchAlgo::getHorizontalMovesBitmap(pieces, boardRectangles, mCurrentSquare, color);
+	return SearchAlgos::getDiagonalMovesBitmap(pieces, boardRectangles, mCurrentSquare, color) | SearchAlgos::getHorizontalMovesBitmap(pieces, boardRectangles, mCurrentSquare, color);
 }
