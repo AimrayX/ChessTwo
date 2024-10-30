@@ -27,6 +27,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y][i + 1] = 0;
+                        piece->isProtected = 1;
                     }
                     else
                     {
@@ -50,6 +51,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y][i - 1] = 0;
+                        piece->isProtected = 1;
                     }
                     else
                     {
@@ -73,6 +75,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[i + 1][position.x] = 0;
+                        piece->isProtected = 1;
                     }
                     else
                     {
@@ -96,6 +99,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[i - 1][position.x] = 0;
+                        piece->isProtected = 1;
                     }
                     else
                     {
@@ -135,6 +139,8 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[y + 1][x + 1] = 0;
+                        piece->isProtected = 1;
+                        std::cout << "Piece is protected" << std::endl;
                     }
                     else
                     {
@@ -159,6 +165,8 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[y - 1][x + 1] = 0;
+                        piece->isProtected = 1;
+                        std::cout << "Piece is protected" << std::endl;
                     }
                     else
                     {
@@ -182,6 +190,8 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[y - 1][x - 1] = 0;
+                        piece->isProtected = 1;
+                        std::cout << "Piece is protected" << std::endl;
                     }
                     else
                     {
@@ -205,6 +215,8 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[y + 1][x - 1] = 0;
+                        piece->isProtected = 1;
+                        std::cout << "Piece is protected" << std::endl;
                     }
                     else
                     {
@@ -219,7 +231,7 @@ namespace SearchAlgos
 
         displayValidSquares(validSquares);
 
-        std::cout << position.x << "x" << position.y << std::endl;
+        std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
         return convert2DArrayToBitmap(validSquares);
     }
@@ -245,6 +257,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y + 2][position.x + 1] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
                 }
@@ -263,6 +276,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y + 1][position.x + 2] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
                 }
@@ -281,6 +295,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y - 1][position.x + 2] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
                 }
@@ -299,6 +314,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y - 2][position.x + 1] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
                 }
@@ -317,6 +333,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y - 2][position.x - 1] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
                 }
@@ -335,6 +352,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y - 1][position.x - 2] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
                 }
@@ -353,6 +371,7 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y + 1][position.x - 2] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
                 }
@@ -371,22 +390,25 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y + 2][position.x - 1] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
+                    
                 }
             }
         }
 
         displayValidSquares(validSquares);
 
-        std::cout << position.x << "x" << position.y << std::endl;
+        std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
         return convert2DArrayToBitmap(validSquares);
     }
 
     unsigned long long getKingMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces,
                                           const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles,
-                                          const sf::RectangleShape &currentSquare, const bool &color) {
+                                          const sf::RectangleShape &currentSquare, const bool &color) 
+    {
         std::array<std::array<bool, 8>, 8> validSquares = {};
 
         sf::Vector2u position(static_cast<unsigned int>(std::round(currentSquare.getPosition().x / currentSquare.getSize().x)),
@@ -404,8 +426,15 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y + 1][position.x + 1] = 0;
+                        piece->isProtected = 1;
                         break;
                     }
+                    if (piece->isProtected == 1)
+                    {
+                        validSquares[position.y + 1][position.x + 1] = 0;
+                        break;
+                    }
+                    
                 }
             }
             if (validSquares[position.y + 1][position.x + 1] != 0)
@@ -427,6 +456,12 @@ namespace SearchAlgos
                     std::cout << "match found" << std::endl;
 
                     if (piece->mColor == color)
+                    {
+                        validSquares[position.y][position.x + 1] = 0;
+                        piece->isProtected = 1;
+                        break;
+                    }
+                    if (piece->isProtected == 1)
                     {
                         validSquares[position.y][position.x + 1] = 0;
                         break;
@@ -454,6 +489,12 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y - 1][position.x + 1] = 0;
+                        piece->isProtected = 1;
+                        break;
+                    }
+                    if (piece->isProtected == 1)
+                    {
+                        validSquares[position.y - 1][position.x + 1] = 0;
                         break;
                     }
                 }
@@ -477,6 +518,12 @@ namespace SearchAlgos
                     std::cout << "match found" << std::endl;
 
                     if (piece->mColor == color)
+                    {
+                        validSquares[position.y - 1][position.x] = 0;
+                        piece->isProtected = 1;
+                        break;
+                    }
+                    if (piece->isProtected == 1)
                     {
                         validSquares[position.y - 1][position.x] = 0;
                         break;
@@ -504,6 +551,12 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y - 1][position.x - 1] = 0;
+                        piece->isProtected = 1;
+                        break;
+                    }
+                    if (piece->isProtected == 1)
+                    {
+                        validSquares[position.y - 1][position.x - 1] = 0;
                         break;
                     }
                 }
@@ -527,6 +580,12 @@ namespace SearchAlgos
                     std::cout << "match found" << std::endl;
 
                     if (piece->mColor == color)
+                    {
+                        validSquares[position.y][position.x - 1] = 0;
+                        piece->isProtected = 1;
+                        break;
+                    }
+                    if (piece->isProtected == 1)
                     {
                         validSquares[position.y][position.x - 1] = 0;
                         break;
@@ -554,6 +613,12 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y + 1][position.x - 1] = 0;
+                        piece->isProtected = 1;
+                        break;
+                    }
+                    if (piece->isProtected == 1)
+                    {
+                        validSquares[position.y + 1][position.x - 1] = 0;
                         break;
                     }
                 }
@@ -579,6 +644,12 @@ namespace SearchAlgos
                     if (piece->mColor == color)
                     {
                         validSquares[position.y + 1][position.x] = 0;
+                        piece->isProtected = 1;
+                        break;
+                    }
+                    if (piece->isProtected == 1)
+                    {
+                        validSquares[position.y + 1][position.x] = 0;
                         break;
                     }
                 }
@@ -595,10 +666,61 @@ namespace SearchAlgos
 
         displayValidSquares(validSquares);
 
-        std::cout << position.x << "x" << position.y << std::endl;
+        std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
         return convert2DArrayToBitmap(validSquares);
     
+    }
+
+    unsigned long long getPawnMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces,
+                                          const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles,
+                                          const sf::RectangleShape &currentSquare, const bool &color, const bool &hasMoved) 
+    {
+        std::array<std::array<bool, 8>, 8> validSquares = {};
+
+        sf::Vector2u position(static_cast<unsigned int>(std::round(currentSquare.getPosition().x / currentSquare.getSize().x)),
+                              static_cast<unsigned int>(std::round(currentSquare.getPosition().y / currentSquare.getSize().y)));
+
+        if (hasMoved == 0 && position.y + 2 < 8)
+        {
+            validSquares[position.y + 2][position.x] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y + 1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+                    validSquares[position.y + 1][position.x] = 0;
+                    validSquares[position.y + 2][position.x] = 0;
+                    break;
+                }
+                if (convertV2fToV2u(boardRectangles[position.y + 2][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+                    validSquares[position.y + 2][position.x] = 0;
+                    break;
+                }
+            }
+        }
+        if (validSquares[position.y + 1][position.x ] == 1 && hasMoved == 0 && position.y + 2 < 8)
+        {
+            validSquares[position.y + 2][position.x] = 1;
+            for (auto &piece : pieces)
+            {
+                if (convertV2fToV2u(boardRectangles[position.y + 1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+                    validSquares[position.y + 1][position.x ] = 0;
+                    break;
+                }
+                if (convertV2fToV2u(boardRectangles[position.y + 2][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
+                {
+                    std::cout << "match found" << std::endl;
+                    validSquares[position.y + 2][position.x] = 0;
+                    break;
+                }
+            }
+        }
+                                          
     }
 
     unsigned long long getSquareBitmap(const sf::RectangleShape &square)

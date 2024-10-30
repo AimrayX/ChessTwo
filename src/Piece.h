@@ -21,6 +21,7 @@ public:
 	sf::RectangleShape mCurrentSquare;
 	unsigned long long bitmapValidSquares;
 	unsigned long long bitmapCurrentSquare;
+	bool isProtected;
 
 	Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare);
 
@@ -32,5 +33,5 @@ public:
 					std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles);
 
 	virtual unsigned long long calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
-											   std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, bool &color) = 0;
+											   std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) = 0;
 };

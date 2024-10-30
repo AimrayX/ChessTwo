@@ -8,7 +8,7 @@ King::King(float boardSize, bool color, sf::RectangleShape initalSquare)
 }
 
 unsigned long long King::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
-										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, bool &color)
+										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles)
 {
-	return SearchAlgos::getKingMovesBitmap(pieces, boardRectangles, mCurrentSquare, color);
+	return SearchAlgos::getKingMovesBitmap(pieces, boardRectangles, mCurrentSquare, mColor);
 }
