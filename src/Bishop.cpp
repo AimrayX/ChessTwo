@@ -7,9 +7,15 @@ Bishop::Bishop(float boardSize, bool color, sf::RectangleShape initalSquare)
 {
 }
 
-unsigned long long Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
-										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles)
+std::pair<unsigned long long, unsigned long long> Bishop::calcMovesBitmap(unsigned long long blackPieces, unsigned long long whitePieces)
 {
-	return SearchAlgos::getDiagonalMovesBitmap(pieces, boardRectangles, mCurrentSquare, mColor);
+	if (!mColor)
+	{
+		return SearchAlgos::getDiagonalMovesBitmap(blackPieces, whitePieces, mCurrentSquare);
+	}
+	else
+	{
+		return SearchAlgos::getDiagonalMovesBitmap(whitePieces, blackPieces, mCurrentSquare);
+	}
 }
 

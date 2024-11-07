@@ -7,8 +7,16 @@ Knight::Knight(float boardSize, bool color, sf::RectangleShape initalSquare)
 {
 }
 
-unsigned long long Knight::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
-										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles)
+std::pair<unsigned long long, unsigned long long> Knight::calcMovesBitmap(unsigned long long blackPieces, unsigned long long whitePieces)
 {
-	return SearchAlgos::getKnightMovesBitmap(pieces, boardRectangles, mCurrentSquare, mColor);
+	if (mColor)
+	{
+		return SearchAlgos::getKnightMovesBitmap(blackPieces, whitePieces, mCurrentSquare);
+	}
+	else
+	{
+		return SearchAlgos::getKnightMovesBitmap(whitePieces, blackPieces, mCurrentSquare);
+	}
+	
+	
 }

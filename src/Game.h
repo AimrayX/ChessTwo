@@ -21,6 +21,7 @@ class Game {
         void dragPiece();
         void updateAllPiecesBitmaps();
         void getPositionCords();
+        void updatePieceBitmap();
         
 
     public:

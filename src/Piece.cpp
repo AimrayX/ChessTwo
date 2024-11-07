@@ -2,10 +2,12 @@
 #include "SearchAlgos.h"
 #include <iostream>
 
+#include <bitset>
+
 Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare)
 	: mTextureFile{"../assets/pieces.png"}, mTextureWidth{334}, mTextureHeight{334},
 	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mTexture{},
-	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, bitmapValidSquares{}, bitmapCurrentSquare{}, isProtected{}
+	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, bitmapValidSquares{}, bitmapCurrentSquare{}, protectedPiecesSquares{},isProtected{}
 {
 
 	// std::cout << "loaded with exit code: " << mTexture.loadFromFile(mTextureFile) << std::endl;
@@ -20,39 +22,72 @@ Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int va
 	mSprite.setScale((boardSize / 8.0f) / 334.0f, (boardSize / 8.0f) / 334.0f);
 	mSprite.setPosition(mCurrentSquare.getPosition());
 
+	bitmapCurrentSquare = SearchAlgos::getSquareBitmap(mCurrentSquare);
+
 }
 
 Piece::~Piece(){
 
 }
 
-void Piece::calcBitmap(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) {
-	bitmapValidSquares = calcMovesBitmap(mPieces, boardRectangles);
+void Piece::calcBitmap(const unsigned long long &blackPieces, const unsigned long long &whitePieces) {
+
 	bitmapCurrentSquare = SearchAlgos::getSquareBitmap(mCurrentSquare);
+	std::pair<unsigned long long, unsigned long long> temp {calcMovesBitmap(blackPieces, whitePieces)};
+	bitmapValidSquares = temp.first;
+	protectedPiecesSquares = temp.second;
+	
 }
 
-std::pair<bool, std::shared_ptr<Piece>> Piece::move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare)
+std::pair<bool, unsigned long long> Piece::move(const unsigned long long &blackPieces, const unsigned long long &whitePieces, const sf::RectangleShape &targetSquare)
 {
+	
+	std::pair<unsigned long long, unsigned long long> tempValidMoves {calcMovesBitmap(blackPieces, whitePieces)};
+	unsigned long long tempTargetSquare {SearchAlgos::getSquareBitmap(targetSquare)};
 
-	if ((calcMovesBitmap(mPieces, boardRectangles) & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
+	//std::bitset<64> valid {tempValidMoves.first};
+	//std::cout << "in piece function : " << valid << std::endl;
+	
+
+	if ((tempValidMoves.first & tempTargetSquare) != 0)
 	{
-		std::cout << "moved Piece\n";
 		
-		for (auto &piece : mPieces)
+		std::cout << "moved Piece\n";
+		if (!mColor)
 		{
-			if ((piece->bitmapCurrentSquare & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
+			if ((whitePieces & tempTargetSquare) != 0)
 			{
 				std::cout << "captured piece\n";
 				mCurrentSquare = targetSquare;
-				return std::make_pair(0, piece);
+				bitmapCurrentSquare = tempTargetSquare;
+				return std::make_pair(0, tempTargetSquare);
 			}
-			
+			else
+			{
+				std::cout << "nothing captured\n";
+				mCurrentSquare = targetSquare;
+				bitmapCurrentSquare = tempTargetSquare;
+				return std::make_pair(0, 0);
+			}
 		}
-		std::cout << "nothing captured\n";
-		mCurrentSquare = targetSquare;
-		return std::make_pair(0, nullptr);
+		if (mColor)
+		{
+			if ((blackPieces & tempTargetSquare) != 0)
+			{
+				std::cout << "captured piece\n";
+				mCurrentSquare = targetSquare;
+				bitmapCurrentSquare = tempTargetSquare;
+				return std::make_pair(0, tempTargetSquare);
+			}
+			else
+			{
+				std::cout << "nothing captured\n";
+				mCurrentSquare = targetSquare;
+				bitmapCurrentSquare = tempTargetSquare;
+				return std::make_pair(0, 0);
+			}
+		}
 	}
-
 	std::cout << "not a valid move\n";
-	return std::make_pair(1, nullptr);
+	return std::make_pair(1, 0);
 }

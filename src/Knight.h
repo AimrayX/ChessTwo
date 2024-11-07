@@ -9,7 +9,6 @@ class Knight : public Piece
 private:
 
 public: 
-    unsigned long long calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
-                                       std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) override;
+    std::pair<unsigned long long, unsigned long long> calcMovesBitmap(unsigned long long blackPieces, unsigned long long whitePieces) override;
     Knight(float boardSize, bool color, sf::RectangleShape initalSquare);
 };

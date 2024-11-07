@@ -21,17 +21,16 @@ public:
 	sf::RectangleShape mCurrentSquare;
 	unsigned long long bitmapValidSquares;
 	unsigned long long bitmapCurrentSquare;
+	unsigned long long protectedPiecesSquares;
 	bool isProtected;
 
 	Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare);
 
 	virtual ~Piece();
 
-	std::pair<bool, std::shared_ptr<Piece>> move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare);
+	std::pair<bool, unsigned long long> move(const unsigned long long &blackPieces, const unsigned long long &whitePieces, const sf::RectangleShape &targetSquare);
 
-	void calcBitmap(std::vector<std::shared_ptr<Piece>> &mPieces, 
-					std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles);
+	void calcBitmap(const unsigned long long &blackPieces, const unsigned long long &whitePieces);
 
-	virtual unsigned long long calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
-											   std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) = 0;
+	virtual std::pair<unsigned long long, unsigned long long> calcMovesBitmap(unsigned long long blackPieces, unsigned long long whitePieces) = 0;
 };
