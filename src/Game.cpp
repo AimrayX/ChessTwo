@@ -13,7 +13,8 @@
 Game::Game() 
     : board(sf::Vector2u(700, 700)), mPieces{}, activePiece{}, renderer(700, 700, "Chess", board.mBoardRectangles), dragging {false}, 
       bitmapWhitePieces{0b0000000000000000000000000000000000000000000000001111111111111111}, 
-      bitmapBlackPieces{0b1111111111111111000000000000000000000000000000000000000000000000} 
+      bitmapBlackPieces{0b1111111111111111000000000000000000000000000000000000000000000000},
+      playerTurn{1} 
     {
     mPieces.emplace_back(std::make_shared<Pawn>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[1][0]));
     mPieces.emplace_back(std::make_shared<Pawn>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[1][1]));
@@ -86,7 +87,14 @@ void Game::run() {
                 if (activePiece == nullptr)
                 {
                     activePiece = getPieceOnPosition(getMousePosition());
+                    if (activePiece != nullptr && activePiece->mColor != playerTurn)
+                    {
+                    activePiece = nullptr;
+                    std::cout << "thats your opponents piece, idiot" << std::endl;
+                    }
                 }
+                
+                
                 
             }
             if (event.type == sf::Event::MouseButtonReleased)
@@ -105,14 +113,15 @@ void Game::run() {
                             renderer.highlightValidSquares(activePiece);
                         }
                         
-                    } else
+                    } 
+                    else
                     {              
                         std::pair<bool, std::shared_ptr<Piece>> moveReturn {activePiece->move(mPieces, board.mBoardRectangles, 
                                                               getSquareOnPosition(getMousePosition()))};
                         
                         renderer.deHighlightValidSquares(activePiece);
-
-                        if (moveReturn.first != 1 && moveReturn.second != nullptr)
+                        
+                        if (moveReturn.first && moveReturn.second != nullptr)
                         {
                             for (auto it = mPieces.begin(); it != mPieces.end(); it++)
                             {
@@ -126,12 +135,13 @@ void Game::run() {
                                 
                             }
                             updateAllPiecesBitmaps();
-                            
+                            playerTurn = !playerTurn;
                         }
-                        else if (!moveReturn.first)
+                        else if (moveReturn.first)
                         {
                             updateAllPiecesBitmaps();
                             activePiece = nullptr;
+                            playerTurn = !playerTurn;
                         }
                         activePiece = nullptr;
                         

@@ -13,6 +13,9 @@ private:
 	int mTexturePositionX;
 	int mTexturePositionY;
 
+protected:
+    bool mHasMoved;
+
 public:
 	sf::Texture mTexture;
 	sf::Sprite mSprite;

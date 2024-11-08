@@ -3,7 +3,7 @@
 #include <array>
 
 Pawn::Pawn(float boardSize, bool color, sf::RectangleShape initalSquare)
-	: Piece(boardSize, 5 * 334, !color * 344, 1, color, initalSquare), mHasMoved{}
+	: Piece(boardSize, 5 * 334, !color * 344, 1, color, initalSquare)
 {
 }
 

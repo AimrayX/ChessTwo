@@ -4,7 +4,7 @@
 
 Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare)
 	: mTextureFile{"../assets/pieces.png"}, mTextureWidth{334}, mTextureHeight{334},
-	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mTexture{},
+	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mHasMoved{}, mTexture{},
 	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, bitmapValidSquares{}, bitmapCurrentSquare{}, isProtected{}
 {
 
@@ -37,7 +37,7 @@ std::pair<bool, std::shared_ptr<Piece>> Piece::move(std::vector<std::shared_ptr<
 	if ((calcMovesBitmap(mPieces, boardRectangles) & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
 	{
 		std::cout << "moved Piece\n";
-		
+		mHasMoved = 1;
 		for (auto &piece : mPieces)
 		{
 			if ((piece->bitmapCurrentSquare & SearchAlgos::getSquareBitmap(targetSquare)) != 0)

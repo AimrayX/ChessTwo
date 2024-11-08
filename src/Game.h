@@ -17,6 +17,7 @@ class Game {
         sf::Vector2f getMousePosition(sf::Event&);
         std::shared_ptr<Piece> getPieceOnPosition(sf::Vector2f);
         sf::RectangleShape &getSquareOnPosition(sf::Vector2f);
+        bool playerTurn;
         void run();
         void dragPiece();
         void updateAllPiecesBitmaps();
