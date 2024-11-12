@@ -12,7 +12,7 @@ add_executable(chess src/main.cpp src/Game.cpp src/Game.h src/Board.cpp
                src/Board.h src/Renderer.cpp src/Renderer.h src/Piece.cpp 
                src/Piece.h src/Rook.cpp src/Rook.h src/SearchAlgos.cpp src/SearchAlgos.h 
                src/MyMaths.cpp src/MyMaths.h src/Bishop.cpp src/Bishop.h src/Queen.cpp src/Queen.h 
-               src/Knight.cpp src/Knight.h src/King.cpp src/King.h src/Pawn.cpp src/Pawn.h)
+               src/Knight.cpp src/Knight.h src/King.cpp src/King.h src/Pawn.cpp src/Pawn.h src/Player.cpp src/Player.h)
 
 target_link_libraries(chess PUBLIC sfml-graphics sfml-window sfml-system)
 target_compile_features(chess PUBLIC cxx_std_17)

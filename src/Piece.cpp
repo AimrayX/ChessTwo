@@ -5,10 +5,8 @@
 Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare)
 	: mTextureFile{"../assets/pieces.png"}, mTextureWidth{334}, mTextureHeight{334},
 	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mHasMoved{}, mTexture{},
-	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, bitmapValidSquares{}, bitmapCurrentSquare{}, isProtected{}
+	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, mBitmapValidSquares{}, mBitmapAttackingSquares{}, mBitmapCurrentSquare{}, isProtected{}
 {
-
-	// std::cout << "loaded with exit code: " << mTexture.loadFromFile(mTextureFile) << std::endl;
 
 	if (!mTexture.loadFromFile(mTextureFile))
 	{
@@ -22,25 +20,20 @@ Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int va
 
 }
 
-Piece::~Piece(){
-
+Piece::~Piece()
+{
 }
 
-void Piece::calcBitmap(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles) {
-	bitmapValidSquares = calcMovesBitmap(mPieces, boardRectangles);
-	bitmapCurrentSquare = SearchAlgos::getSquareBitmap(mCurrentSquare);
-}
-
-std::pair<bool, std::shared_ptr<Piece>> Piece::move(std::vector<std::shared_ptr<Piece>> &mPieces, std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles, sf::RectangleShape &targetSquare)
+std::pair<bool, std::shared_ptr<Piece>> Piece::move(std::vector<std::shared_ptr<Piece>> &mPieces, sf::RectangleShape &targetSquare)
 {
 
-	if ((calcMovesBitmap(mPieces, boardRectangles) & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
+	if ((mBitmapValidSquares & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
 	{
 		std::cout << "moved Piece\n";
 		mHasMoved = 1;
 		for (auto &piece : mPieces)
 		{
-			if ((piece->bitmapCurrentSquare & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
+			if ((piece->mBitmapCurrentSquare & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
 			{
 				std::cout << "captured piece\n";
 				mCurrentSquare = targetSquare;
