@@ -13,6 +13,9 @@ Bishop::Bishop(float boardSize, bool color, sf::RectangleShape initalSquare)
 void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
 										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles)
 {
+
+	mBitmapCurrentSquare = SearchAlgos::getSquareBitmap(mCurrentSquare);
+
 	std::array<std::array<bool, 8>, 8> validSquares = {};
 
 	sf::Vector2u position(static_cast<unsigned int>(std::round(mCurrentSquare.getPosition().x / mCurrentSquare.getSize().x)),
@@ -25,7 +28,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 		{
 			if (convertV2fToV2u(boardRectangles[y + 1][x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[y + 1][x + 1] = 0;
@@ -50,7 +53,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 		{
 			if (convertV2fToV2u(boardRectangles[y - 1][x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 
 				if (piece->mColor == mColor)
 				{
@@ -76,7 +79,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 			validSquares[y - 1][x - 1] = 1;
 			if (convertV2fToV2u(boardRectangles[y - 1][x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[y - 1][x - 1] = 0;
@@ -101,7 +104,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 		{
 			if (convertV2fToV2u(boardRectangles[y + 1][x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[y + 1][x - 1] = 0;
@@ -119,9 +122,10 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 		}
 	}
 
-	SearchAlgos::displayValidSquares(validSquares);
+	//SearchAlgos::displayValidSquares(validSquares);
 
 	std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
 	mBitmapValidSquares = SearchAlgos::convert2DArrayToBitmap(validSquares);
+	mBitmapAttackingSquares = mBitmapValidSquares;
 }

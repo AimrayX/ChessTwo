@@ -12,16 +12,16 @@ private:
 	int mTextureHeight;
 	int mTexturePositionX;
 	int mTexturePositionY;
-
-protected:
-    bool mHasMoved;
-
+	
 public:
+	bool mHasMoved;
+	bool mHasPrevMoved;
 	sf::Texture mTexture;
 	sf::Sprite mSprite;
 	int mValue;
 	bool mColor;
 	sf::RectangleShape mCurrentSquare;
+	sf::RectangleShape mPreviousSquare;
 	unsigned long long mBitmapValidSquares;
 	unsigned long long mBitmapAttackingSquares;
 	unsigned long long mBitmapCurrentSquare;

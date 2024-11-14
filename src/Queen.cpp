@@ -13,7 +13,10 @@ Queen::Queen(float boardSize, bool color, sf::RectangleShape initalSquare)
 void Queen::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces, 
 										 std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles)
 {
+	mBitmapCurrentSquare = SearchAlgos::getSquareBitmap(mCurrentSquare);
+
 	mBitmapValidSquares = getDiagonalMovesBitmap(pieces, boardRectangles) | getHorizontalMovesBitmap(pieces, boardRectangles);
+	mBitmapAttackingSquares = mBitmapValidSquares;
 }
 
 unsigned long long Queen::getHorizontalMovesBitmap(const std::vector<std::shared_ptr<Piece>> &pieces, const std::array<std::array<sf::RectangleShape, 8>, 8> &boardRectangles)
@@ -30,7 +33,7 @@ unsigned long long Queen::getHorizontalMovesBitmap(const std::vector<std::shared
 		{
 			if (convertV2fToV2u(boardRectangles[position.y][i + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[position.y][i + 1] = 0;
@@ -54,7 +57,7 @@ unsigned long long Queen::getHorizontalMovesBitmap(const std::vector<std::shared
 		{
 			if (convertV2fToV2u(boardRectangles[position.y][i - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[position.y][i - 1] = 0;
@@ -78,7 +81,7 @@ unsigned long long Queen::getHorizontalMovesBitmap(const std::vector<std::shared
 			validSquares[i + 1][position.x] = 1;
 			if (convertV2fToV2u(boardRectangles[i + 1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[i + 1][position.x] = 0;
@@ -102,7 +105,7 @@ unsigned long long Queen::getHorizontalMovesBitmap(const std::vector<std::shared
 		{
 			if (convertV2fToV2u(boardRectangles[i - 1][position.x].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[i - 1][position.x] = 0;
@@ -119,7 +122,7 @@ unsigned long long Queen::getHorizontalMovesBitmap(const std::vector<std::shared
 		}
 	}
 
-	SearchAlgos::displayValidSquares(validSquares);
+	//SearchAlgos::displayValidSquares(validSquares);
 
 	std::cout << position.x << "x" << position.y << std::endl;
 
@@ -140,7 +143,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 		{
 			if (convertV2fToV2u(boardRectangles[y + 1][x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[y + 1][x + 1] = 0;
@@ -165,7 +168,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 		{
 			if (convertV2fToV2u(boardRectangles[y - 1][x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 
 				if (piece->mColor == mColor)
 				{
@@ -191,7 +194,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 			validSquares[y - 1][x - 1] = 1;
 			if (convertV2fToV2u(boardRectangles[y - 1][x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[y - 1][x - 1] = 0;
@@ -216,7 +219,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 		{
 			if (convertV2fToV2u(boardRectangles[y + 1][x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()))
 			{
-				std::cout << "match found" << std::endl;
+				//std::cout << "match found" << std::endl;
 				if (piece->mColor == mColor)
 				{
 					validSquares[y + 1][x - 1] = 0;
@@ -234,7 +237,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 		}
 	}
 
-	SearchAlgos::displayValidSquares(validSquares);
+	//SearchAlgos::displayValidSquares(validSquares);
 
 	std::cout << position.x << "x" << position.y << '\n' << std::endl;
 

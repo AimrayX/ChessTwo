@@ -46,12 +46,12 @@ Game::Game()
     mPieces.emplace_back(std::make_shared<Rook>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][7]));
     mPieces.emplace_back(std::make_shared<Bishop>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][2]));
     mPieces.emplace_back(std::make_shared<Bishop>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][5]));
-    mPieces.emplace_back(std::make_shared<Queen> (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][4]));
+    mPieces.emplace_back(std::make_shared<Queen> (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][3]));
     mPieces.emplace_back(std::make_shared<Knight>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][6]));
     mPieces.emplace_back(std::make_shared<Knight>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][1]));
 
     mPieces.emplace_back(std::make_shared<King>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][4]));
-    mPieces.emplace_back(std::make_shared<King>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][3]));
+    mPieces.emplace_back(std::make_shared<King>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[7][4]));
 
     for (auto &piece : mPieces)
     {
@@ -108,16 +108,18 @@ void Game::run()
                     else
                     {
                         std::pair<bool, std::shared_ptr<Piece>> moveReturn{activePiece->move(mPieces, getSquareOnPosition(getMousePosition()))};
-
+                        std::shared_ptr<Piece> tempPiece = nullptr;
                         renderer.deHighlightValidSquares(activePiece);
 
                         if (!moveReturn.first && moveReturn.second != nullptr)
                         {
+
                             for (auto it = mPieces.begin(); it != mPieces.end(); it++)
                             {
                                 if (it->get() == moveReturn.second.get())
                                 {
-                                    std::cout << " taken pieces isProtected: " << it->get()->isProtected;
+                                    //std::cout << " taken pieces isProtected: " << it->get()->isProtected;
+                                    std::shared_ptr<Piece> tempPiece = *it;
                                     it = mPieces.erase(it);
                                     break;
                                 }
@@ -130,10 +132,26 @@ void Game::run()
                         {
                             updateAllPiecesBitmaps();
                             switchPlayerTurn();
-                            
                         }
-                        activePiece = nullptr;
+                        if (checkCheck())
+                        {
+                            activePiece->mCurrentSquare = activePiece->mPreviousSquare;
+                            if (activePiece->mHasPrevMoved == false)
+                            {
+                                activePiece->mHasMoved = false;
+                            }
+                            if (tempPiece != nullptr)
+                            {
+                                mPieces.insert(mPieces.begin(), tempPiece);
+                            }
+                            
+                            
+                            updateAllPiecesBitmaps();
+                        }
 
+                        activePiece = nullptr;
+                        tempPiece = nullptr;
+                        //checkCheck();
                         renderer.updatePieceSprites(board.mBoardSize, mPieces);
                     }
                 }
@@ -243,6 +261,7 @@ void Game::getPositionCords()
     }
 }
 
+//make that only if the side that is playing is in check it returns true, in order to check for a invalid move
 bool Game::checkCheck()
 {
     unsigned long long kingPos;
@@ -258,7 +277,7 @@ bool Game::checkCheck()
 
     for (auto &piece : mPieces)
     {
-        if (piece->mColor != playerTurn && (kingPos & piece->mBitmapValidSquares) != 0)
+        if (piece->mColor != playerTurn && (kingPos & piece->mBitmapAttackingSquares) != 0)
         {
             if (playerTurn == player1.mColor)
             {

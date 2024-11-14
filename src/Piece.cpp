@@ -4,8 +4,9 @@
 
 Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare)
 	: mTextureFile{"../assets/pieces.png"}, mTextureWidth{334}, mTextureHeight{334},
-	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mHasMoved{}, mTexture{},
-	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, mBitmapValidSquares{}, mBitmapAttackingSquares{}, mBitmapCurrentSquare{}, isProtected{}
+	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mHasMoved{}, mHasPrevMoved{}, mTexture{},
+	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, mPreviousSquare{initialSquare}, mBitmapValidSquares{}, mBitmapAttackingSquares{}, 
+	  mBitmapCurrentSquare{}, isProtected{}
 {
 
 	if (!mTexture.loadFromFile(mTextureFile))
@@ -30,18 +31,21 @@ std::pair<bool, std::shared_ptr<Piece>> Piece::move(std::vector<std::shared_ptr<
 	if ((mBitmapValidSquares & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
 	{
 		std::cout << "moved Piece\n";
+		mHasPrevMoved = mHasMoved;
 		mHasMoved = 1;
 		for (auto &piece : mPieces)
 		{
 			if ((piece->mBitmapCurrentSquare & SearchAlgos::getSquareBitmap(targetSquare)) != 0)
 			{
 				std::cout << "captured piece\n";
+				mPreviousSquare = mCurrentSquare;
 				mCurrentSquare = targetSquare;
 				return std::make_pair(0, piece);
 			}
 			
 		}
 		std::cout << "nothing captured\n";
+		mPreviousSquare = mCurrentSquare;
 		mCurrentSquare = targetSquare;
 		return std::make_pair(0, nullptr);
 	}
