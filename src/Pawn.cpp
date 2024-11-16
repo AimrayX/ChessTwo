@@ -89,21 +89,33 @@ void Pawn::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 			}
 		}
 	}
-	if (mColor == 0 && position.x < 7 && position.x > 0)
+	if (mColor == 0)
 	{
-		validSquares[position.y + 1][position.x + 1] = 0;
-		validSquares[position.y + 1][position.x - 1] = 0;
+		bool leftSearch{}, rightSearch{};
 
-		attackingSquares[position.y + 1][position.x + 1] = 1;
-		attackingSquares[position.y + 1][position.x - 1] = 1;
+		if (position.x < 7)
+		{
+			validSquares[position.y + 1][position.x + 1] = 0;
+			attackingSquares[position.y + 1][position.x + 1] = 1;
+			rightSearch = true;
+		}
+		if (position.x > 0)
+		{
+			validSquares[position.y + 1][position.x - 1] = 0;
+			attackingSquares[position.y + 1][position.x - 1] = 1;
+			leftSearch = true;
+		}
+		
+		
+		
 		for (auto &piece : pieces)
 		{
-			if (convertV2fToV2u(boardRectangles[position.y + 1][position.x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
+			if (rightSearch && convertV2fToV2u(boardRectangles[position.y + 1][position.x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
 			{
 				//std::cout << "match found" << std::endl;
 				validSquares[position.y + 1][position.x + 1] = 1;
 			}
-			if (convertV2fToV2u(boardRectangles[position.y + 1][position.x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
+			if (leftSearch && convertV2fToV2u(boardRectangles[position.y + 1][position.x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
 			{
 				//std::cout << "match found" << std::endl;
 				validSquares[position.y + 1][position.x - 1] = 1;
@@ -111,27 +123,41 @@ void Pawn::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 
 		}
 	}
-	else if (mColor == 1 && position.x < 7 && position.x > 0)
+	else if (mColor == 1)
 	{
-		validSquares[position.y - 1][position.x + 1] = 0;
-		validSquares[position.y - 1][position.x - 1] = 0;
+		bool leftSearch{}, rightSearch{};
 
-		attackingSquares[position.y - 1][position.x + 1] = 1;
-		attackingSquares[position.y - 1][position.x - 1] = 1;
+		if (position.x < 7)
+		{
+			validSquares[position.y - 1][position.x + 1] = 0;
+			attackingSquares[position.y - 1][position.x + 1] = 1;
+			rightSearch = true;
+		}
+		if (position.x > 0)
+		{
+			validSquares[position.y - 1][position.x - 1] = 0;
+			attackingSquares[position.y - 1][position.x - 1] = 1;
+			leftSearch = true;
+		}
+		
+		
+		
 		for (auto &piece : pieces)
 		{
-			if (convertV2fToV2u(boardRectangles[position.y - 1][position.x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
+			if (rightSearch && convertV2fToV2u(boardRectangles[position.y - 1][position.x + 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
 			{
 				//std::cout << "match found" << std::endl;
 				validSquares[position.y - 1][position.x + 1] = 1;
 			}
-			if (convertV2fToV2u(boardRectangles[position.y - 1][position.x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
+			if (leftSearch && convertV2fToV2u(boardRectangles[position.y - 1][position.x - 1].getPosition()) == convertV2fToV2u(piece->mCurrentSquare.getPosition()) && piece->mColor != mColor)
 			{
 				//std::cout << "match found" << std::endl;
 				validSquares[position.y - 1][position.x - 1] = 1;
 			}
+
 		}
 	}
+	
 
 
 	//SearchAlgos::displayValidSquares(validSquares);

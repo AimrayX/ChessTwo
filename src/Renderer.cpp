@@ -63,7 +63,7 @@ void Renderer::highlightValidSquares(const std::shared_ptr<Piece> &piece) {
             mBoardRectangles[7-i/8][7-i%8].setOutlineThickness(-3.0f);
             mBoardRectangles[7-i/8][7-i%8].setOutlineColor(sf::Color(128, 45, 43, 255));
         }
-        if(piece->mBitmapValidSquares != piece->mBitmapAttackingSquares && (piece->mBitmapAttackingSquares >> i) & 1)
+        if(piece->mBitmapValidSquares != piece->mBitmapAttackingSquares && (piece->mBitmapAttackingSquares >> i) & 1 && mBoardRectangles[7-i/8][7-i%8].getOutlineThickness() != -3.0f)
         {
             mBoardRectangles[7-i/8][7-i%8].setOutlineThickness(-3.0f);
             mBoardRectangles[7-i/8][7-i%8].setOutlineColor(sf::Color(51, 143, 76, 255));

@@ -16,6 +16,7 @@ Game::Game()
       mBitmapBlackPieces{0b1111111111111111000000000000000000000000000000000000000000000000},
       player1(1), player2(0), playerTurn{1}
 {
+    
     mPieces.emplace_back(std::make_shared<Pawn>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[1][0]));
     mPieces.emplace_back(std::make_shared<Pawn>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[1][1]));
     mPieces.emplace_back(std::make_shared<Pawn>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[1][2]));
@@ -33,7 +34,7 @@ Game::Game()
     mPieces.emplace_back(std::make_shared<Pawn>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[6][5]));
     mPieces.emplace_back(std::make_shared<Pawn>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[6][6]));
     mPieces.emplace_back(std::make_shared<Pawn>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 1, board.mBoardRectangles[6][7]));
-
+    
     mPieces.emplace_back(std::make_shared<Rook>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][0]));
     mPieces.emplace_back(std::make_shared<Rook>  (static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][7]));
     mPieces.emplace_back(std::make_shared<Bishop>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[0][2]));
@@ -125,15 +126,15 @@ void Game::run()
                                 }
                             }
                             updateAllPiecesBitmaps();
-                            switchPlayerTurn();
+                            
                             
                         }
                         else if (!moveReturn.first)
                         {
                             updateAllPiecesBitmaps();
-                            switchPlayerTurn();
                         }
-                        if (checkCheck())
+
+                        if (!moveReturn.first && checkCheck() && ((playerTurn == player1.mColor && player1.isInCheck) || (playerTurn == player2.mColor && player2.isInCheck)))
                         {
                             activePiece->mCurrentSquare = activePiece->mPreviousSquare;
                             if (activePiece->mHasPrevMoved == false)
@@ -144,15 +145,16 @@ void Game::run()
                             {
                                 mPieces.insert(mPieces.begin(), tempPiece);
                             }
-                            
-                            
                             updateAllPiecesBitmaps();
                         }
-
+                        else if(!moveReturn.first)
+                        {
+                            switchPlayerTurn();    
+                            updateAllPiecesBitmaps();
+                        }
                         activePiece = nullptr;
                         tempPiece = nullptr;
-                        //checkCheck();
-                        renderer.updatePieceSprites(board.mBoardSize, mPieces);
+                        renderer.updatePieceSprites(board.mBoardSize, mPieces);                   
                     }
                 }
                 else
@@ -243,6 +245,7 @@ void Game::updateAllPiecesBitmaps()
     {
         piece->calcMovesBitmap(mPieces, board.mBoardRectangles);
     }
+    
 }
 
 void Game::getPositionCords()
