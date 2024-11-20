@@ -6,7 +6,7 @@
 #include <cmath>
 
 Knight::Knight(float boardSize, bool color, sf::RectangleShape initalSquare)
-	: Piece(boardSize, 3 * 334, !color * 344, 3, color, initalSquare)
+	: Piece(boardSize, 3 * 334, !color * 344, 5, 3, color, initalSquare)
 {
 }
 
@@ -173,7 +173,7 @@ void Knight::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 		}
 	}
 
-	std::cout << position.x << "x" << position.y << '\n' << std::endl;
+	//std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
 	mBitmapValidSquares = SearchAlgos::convert2DArrayToBitmap(validSquares);
 	mBitmapAttackingSquares = mBitmapValidSquares;

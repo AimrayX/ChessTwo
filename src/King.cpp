@@ -6,7 +6,7 @@
 #include <iostream>
 
 King::King(float boardSize, bool color, sf::RectangleShape initalSquare)
-	: Piece(boardSize, 0 * 334, !color * 344, 0, color, initalSquare)
+	: Piece(boardSize, 0 * 334, !color * 344, 1, 0, color, initalSquare)
 {
 }
 
@@ -280,7 +280,7 @@ void King::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
         
     }
 
-    std::cout << position.x << "x" << position.y << '\n' << std::endl;
+    //std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
     mBitmapValidSquares = SearchAlgos::convert2DArrayToBitmap(validSquares);
     mBitmapAttackingSquares = SearchAlgos::convert2DArrayToBitmap(attackingSquares);

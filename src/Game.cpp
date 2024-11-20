@@ -14,7 +14,7 @@ Game::Game()
     : board(sf::Vector2u(700, 700)), mPieces{}, activePiece{}, renderer(700, 700, "Chess", board.mBoardRectangles), dragging{false},
       mBitmapWhitePieces{0b0000000000000000000000000000000000000000000000001111111111111111},
       mBitmapBlackPieces{0b1111111111111111000000000000000000000000000000000000000000000000},
-      player1(1), player2(0), playerTurn{1}
+      player1(1), player2(0), playerTurn{1}, player1won{}, player2won{}
 {
     
     mPieces.emplace_back(std::make_shared<Pawn>(static_cast<float>(std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), 0, board.mBoardRectangles[1][0]));
@@ -64,7 +64,7 @@ Game::Game()
 
 void Game::run()
 {
-    while (renderer.mWindow.isOpen())
+    while (renderer.mWindow.isOpen() && !player1won && !player2won)
     {
         sf::Event event;
         while (renderer.mWindow.pollEvent(event))
@@ -79,7 +79,7 @@ void Game::run()
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
-                std::cout << "clicked" << std::endl;
+                //std::cout << "clicked" << std::endl;
 
                 if (activePiece == nullptr)
                 {
@@ -99,7 +99,7 @@ void Game::run()
 
                     if (activePiece == getPieceOnPosition(getMousePosition()))
                     {
-                        std::cout << "piece selected" << std::endl;
+                        //std::cout << "piece selected" << std::endl;
 
                         if (activePiece != nullptr)
                         {
@@ -149,8 +149,14 @@ void Game::run()
                         }
                         else if(!moveReturn.first)
                         {
+                            if (checkIfPawnPromotion())
+                            {
+                                promotion();
+                            }
+                    
                             switchPlayerTurn();    
                             updateAllPiecesBitmaps();
+                            checkCheck();
                         }
                         activePiece = nullptr;
                         tempPiece = nullptr;
@@ -159,7 +165,7 @@ void Game::run()
                 }
                 else
                 {
-                    std::cout << "nothing selected" << std::endl;
+                    //std::cout << "nothing selected" << std::endl;
                 }
             }
         }
@@ -198,7 +204,7 @@ std::shared_ptr<Piece> Game::getPieceOnPosition(sf::Vector2f mousePosition)
              && (mousePosition.y < (piece->mCurrentSquare.getPosition().y + piece->mCurrentSquare.getSize().y)))
         {
 
-            std::cout << "clicked on piece" << std::endl;
+            //std::cout << "clicked on piece" << std::endl;
             return piece;
         }
     }
@@ -220,7 +226,7 @@ sf::RectangleShape &Game::getSquareOnPosition(sf::Vector2f mousePosition)
                  && (mousePosition.y < (rect.getPosition().y + rect.getSize().y)))
             {
 
-                std::cout << "clicked on square " << rect.getPosition().x << "x * " << rect.getPosition().y << "y" << std::endl;
+                //std::cout << "clicked on square " << rect.getPosition().x << "x * " << rect.getPosition().y << "y" << std::endl;
                 return rect;
             }
         }
@@ -231,7 +237,7 @@ sf::RectangleShape &Game::getSquareOnPosition(sf::Vector2f mousePosition)
 
 void Game::dragPiece()
 {
-    std::cout << "dragging" << std::endl;
+    //std::cout << "dragging" << std::endl;
     activePiece->mSprite.setPosition(sf::Vector2f(sf::Mouse::getPosition(renderer.mWindow)));
 }
 
@@ -285,10 +291,12 @@ bool Game::checkCheck()
             if (playerTurn == player1.mColor)
             {
                 player1.isInCheck = true;
+                checkCheckMate();
             }
             else
             {
                 player2.isInCheck = true;
+                checkCheckMate();
             }
             return true;
         } 
@@ -307,4 +315,65 @@ void Game::switchPlayerTurn()
         player2.isToMove = false;
     }
     playerTurn = !playerTurn;
+}
+
+bool Game::checkCheckMate()
+{
+    if (!checkIfAbleToEvade() && !checkIfAbleToBlock())
+    {
+        std::cout << "Player " << !playerTurn << " won the game by checkmate!" << std::endl;
+        if (playerTurn)
+        {
+            player2won = true;
+        }
+        else
+        {
+            player1won = true;
+        }
+        
+        
+        return true;
+    }
+    return false;
+}
+
+bool Game::checkIfAbleToEvade()
+{
+    if (playerTurn && mPieces[mPieces.size()-1].get()->mBitmapValidSquares != 0)
+    {
+        return true;
+    }
+    else if (!playerTurn && mPieces[mPieces.size()-2].get()->mBitmapValidSquares != 0)
+    {
+        return true; 
+    }
+    return false;
+}
+
+//Class would have to move the piece to each single valid square but would first have to find out what does squares are by bitshifting
+//and checking if there was a 1 and keeping track of the shifts and thus which square it corresponds to :(
+//Then it need to move it and check if its still check and undo the move
+bool Game::checkIfAbleToBlock()
+{
+    return false;
+}
+
+//check if a pawn has its current square in the first eight bits or last eight bits
+bool Game::checkIfPawnPromotion()
+{
+    for (auto &piece : mPieces)
+    {
+        if (piece->mColor == playerTurn && piece->mPieceID == 6 && (piece->mBitmapCurrentSquare & 0b1111111100000000000000000000000000000000000000000000000011111111) != 0)
+        {
+            std::cout << "pawn can be promoted" << std::endl;
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+void Game::promotion()
+{
+    //TODO make promote selection pop up
 }

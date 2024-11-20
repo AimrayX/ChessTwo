@@ -6,7 +6,7 @@
 #include <iostream>
 
 Rook::Rook(float boardSize, bool color, sf::RectangleShape initalSquare)
-	: Piece(boardSize, 4 * 334, !color * 344, 5, color, initalSquare)
+	: Piece(boardSize, 4 * 334, !color * 344, 4, 5, color, initalSquare)
 {
 }
 
@@ -17,6 +17,7 @@ void Rook::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 	mBitmapCurrentSquare = SearchAlgos::getSquareBitmap(mCurrentSquare);
 
 	std::array<std::array<bool, 8>, 8> validSquares = {};
+	
 
 	sf::Vector2u position(static_cast<unsigned int>(std::round(mCurrentSquare.getPosition().x / mCurrentSquare.getSize().x)),
 							static_cast<unsigned int>(std::round(mCurrentSquare.getPosition().y / mCurrentSquare.getSize().y)));
@@ -119,7 +120,7 @@ void Rook::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 
 	//SearchAlgos::displayValidSquares(validSquares);
 
-	std::cout << position.x << "x" << position.y << std::endl;
+	//std::cout << position.x << "x" << position.y << std::endl;
 
 	mBitmapValidSquares = SearchAlgos::convert2DArrayToBitmap(validSquares);
 	mBitmapAttackingSquares = mBitmapValidSquares;

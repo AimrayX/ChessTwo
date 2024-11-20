@@ -6,7 +6,7 @@
 #include <iostream>
 
 Queen::Queen(float boardSize, bool color, sf::RectangleShape initalSquare)
-	: Piece(boardSize, 1 * 334, !color * 344, 3, color, initalSquare)
+	: Piece(boardSize, 1 * 334, !color * 344, 2, 3, color, initalSquare)
 {
 }
 
@@ -124,7 +124,7 @@ unsigned long long Queen::getHorizontalMovesBitmap(const std::vector<std::shared
 
 	//SearchAlgos::displayValidSquares(validSquares);
 
-	std::cout << position.x << "x" << position.y << std::endl;
+	//std::cout << position.x << "x" << position.y << std::endl;
 
 	return SearchAlgos::convert2DArrayToBitmap(validSquares);
 }
@@ -148,7 +148,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 				{
 					validSquares[y + 1][x + 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -174,7 +174,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 				{
 					validSquares[y - 1][x + 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -199,7 +199,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 				{
 					validSquares[y - 1][x - 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -224,7 +224,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 				{
 					validSquares[y + 1][x - 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -239,7 +239,7 @@ unsigned long long Queen::getDiagonalMovesBitmap(const std::vector<std::shared_p
 
 	//SearchAlgos::displayValidSquares(validSquares);
 
-	std::cout << position.x << "x" << position.y << '\n' << std::endl;
+	//std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
 	return SearchAlgos::convert2DArrayToBitmap(validSquares);
 }

@@ -2,11 +2,11 @@
 #include "SearchAlgos.h"
 #include <iostream>
 
-Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare)
+Piece::Piece(float boardSize, int texturePositionX, int texturePositionY, unsigned int pieceID, int value, bool color, sf::RectangleShape initialSquare)
 	: mTextureFile{"../assets/pieces.png"}, mTextureWidth{334}, mTextureHeight{334},
-	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mHasMoved{}, mHasPrevMoved{}, mTexture{},
-	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, mPreviousSquare{initialSquare}, mBitmapValidSquares{}, mBitmapAttackingSquares{}, 
-	  mBitmapCurrentSquare{}, isProtected{}
+	  mTexturePositionX{texturePositionX}, mTexturePositionY{texturePositionY}, mPieceID{pieceID}, mHasMoved{}, mHasPrevMoved{}, mTexture{},
+	  mSprite{}, mValue{value}, mColor{color}, mCurrentSquare{initialSquare}, mPreviousSquare{initialSquare},
+	  mBitmapValidSquares{}, mBitmapAttackingSquares{}, mBitmapCurrentSquare{}, isProtected{}
 {
 
 	if (!mTexture.loadFromFile(mTextureFile))

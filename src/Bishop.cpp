@@ -6,7 +6,7 @@
 #include <cmath>
 
 Bishop::Bishop(float boardSize, bool color, sf::RectangleShape initalSquare)
-	: Piece(boardSize, 2 * 334, !color * 344, 3, color, initalSquare)
+	: Piece(boardSize, 2 * 334, !color * 344, 3, 3, color, initalSquare)
 {
 }
 
@@ -33,7 +33,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 				{
 					validSquares[y + 1][x + 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -59,7 +59,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 				{
 					validSquares[y - 1][x + 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -84,7 +84,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 				{
 					validSquares[y - 1][x - 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -109,7 +109,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 				{
 					validSquares[y + 1][x - 1] = 0;
 					piece->isProtected = 1;
-					std::cout << "Piece is protected" << std::endl;
+					//std::cout << "Piece is protected" << std::endl;
 				}
 				else
 				{
@@ -124,7 +124,7 @@ void Bishop::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 
 	//SearchAlgos::displayValidSquares(validSquares);
 
-	std::cout << position.x << "x" << position.y << '\n' << std::endl;
+	//std::cout << position.x << "x" << position.y << '\n' << std::endl;
 
 	mBitmapValidSquares = SearchAlgos::convert2DArrayToBitmap(validSquares);
 	mBitmapAttackingSquares = mBitmapValidSquares;

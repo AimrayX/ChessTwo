@@ -6,7 +6,7 @@
 #include <cmath>
 
 Pawn::Pawn(float boardSize, bool color, sf::RectangleShape initalSquare)
-	: Piece(boardSize, 5 * 334, !color * 344, 1, color, initalSquare), attackingSquares{}
+	: Piece(boardSize, 5 * 334, !color * 344, 6, 1, color, initalSquare), attackingSquares{}
 {
 }
 
@@ -89,7 +89,7 @@ void Pawn::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 			}
 		}
 	}
-	if (mColor == 0)
+	if (position.y < 8 && mColor == 0)
 	{
 		bool leftSearch{}, rightSearch{};
 
@@ -123,7 +123,7 @@ void Pawn::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 
 		}
 	}
-	else if (mColor == 1)
+	else if (position.y > 0 && mColor == 1)
 	{
 		bool leftSearch{}, rightSearch{};
 
@@ -162,7 +162,7 @@ void Pawn::calcMovesBitmap(std::vector<std::shared_ptr<Piece>> &pieces,
 
 	//SearchAlgos::displayValidSquares(validSquares);
 
-	std::cout << position.x << "x" << position.y << "  " << mColor << '\n' << std::endl;
+	//std::cout << position.x << "x" << position.y << "  " << mColor << '\n' << std::endl;
 
 	mBitmapValidSquares = SearchAlgos::convert2DArrayToBitmap(validSquares);
 	mBitmapAttackingSquares = SearchAlgos::convert2DArrayToBitmap(attackingSquares);

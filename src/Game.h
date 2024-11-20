@@ -21,6 +21,8 @@ class Game {
         Player player1;
         Player player2;
         bool playerTurn;
+        bool player1won;
+        bool player2won;
         
         void run();
         void dragPiece();
@@ -28,6 +30,11 @@ class Game {
         void getPositionCords();
         bool checkCheck();
         void switchPlayerTurn();
+        bool checkCheckMate();
+        bool checkIfAbleToEvade();
+        bool checkIfAbleToBlock();
+        bool checkIfPawnPromotion();
+        void promotion();
         
 
     public:

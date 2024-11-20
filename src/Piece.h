@@ -14,6 +14,7 @@ private:
 	int mTexturePositionY;
 	
 public:
+	unsigned int mPieceID;
 	bool mHasMoved;
 	bool mHasPrevMoved;
 	sf::Texture mTexture;
@@ -27,7 +28,7 @@ public:
 	unsigned long long mBitmapCurrentSquare;
 	bool isProtected;
 
-	Piece(float boardSize, int texturePositionX, int texturePositionY, int value, bool color, sf::RectangleShape initialSquare);
+	Piece(float boardSize, int texturePositionX, int texturePositionY, unsigned int pieceID, int value, bool color, sf::RectangleShape initialSquare);
 
 	virtual ~Piece();
 
