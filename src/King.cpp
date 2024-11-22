@@ -294,7 +294,7 @@ bool King::checkIfSquareIsAttacked(const bool &color ,const sf::RectangleShape &
             if (piece->mColor != color && (SearchAlgos::getSquareBitmap(boardRectangle) & piece->mBitmapAttackingSquares) != 0)
                 {
                     
-                    std::cout << "King can't move there. Square under attack!" << std::endl;
+                    //std::cout << "King can't move there. Square under attack!" << std::endl;
                     return 1;
                 }
         }

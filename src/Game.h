@@ -34,7 +34,7 @@ class Game {
         bool checkIfAbleToEvade();
         bool checkIfAbleToBlock();
         bool checkIfPawnPromotion();
-        void promotion();
+        void promote();
         
 
     public:

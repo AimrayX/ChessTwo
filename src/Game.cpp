@@ -149,13 +149,12 @@ void Game::run()
                         }
                         else if(!moveReturn.first)
                         {
+                            updateAllPiecesBitmaps();
                             if (checkIfPawnPromotion())
                             {
-                                promotion();
+                                promote();
                             }
-                    
                             switchPlayerTurn();    
-                            updateAllPiecesBitmaps();
                             checkCheck();
                         }
                         activePiece = nullptr;
@@ -165,7 +164,7 @@ void Game::run()
                 }
                 else
                 {
-                    //std::cout << "nothing selected" << std::endl;
+                    std::cout << "nothing selected" << std::endl;
                 }
             }
         }
@@ -350,6 +349,7 @@ bool Game::checkIfAbleToEvade()
     return false;
 }
 
+//TODO
 //Class would have to move the piece to each single valid square but would first have to find out what does squares are by bitshifting
 //and checking if there was a 1 and keeping track of the shifts and thus which square it corresponds to :(
 //Then it need to move it and check if its still check and undo the move
@@ -361,19 +361,32 @@ bool Game::checkIfAbleToBlock()
 //check if a pawn has its current square in the first eight bits or last eight bits
 bool Game::checkIfPawnPromotion()
 {
-    for (auto &piece : mPieces)
+    if (activePiece->mPieceID == 6 && (activePiece->mBitmapCurrentSquare & 0b1111111100000000000000000000000000000000000000000000000011111111) != 0)
     {
-        if (piece->mColor == playerTurn && piece->mPieceID == 6 && (piece->mBitmapCurrentSquare & 0b1111111100000000000000000000000000000000000000000000000011111111) != 0)
-        {
-            std::cout << "pawn can be promoted" << std::endl;
-            return true;
-        }
+        std::cout << "pawn can be promoted" << std::endl;
+        return true;
     }
-    
+
     return false;
 }
 
-void Game::promotion()
+void Game::promote()
 {
     //TODO make promote selection pop up
+    for (auto it = mPieces.begin(); it != mPieces.end(); it++)
+    {
+        if (it->get() == activePiece.get())
+        {
+            //std::cout << " taken pieces isProtected: " << it->get()->isProtected;
+
+            sf::RectangleShape promotionSquare = activePiece->mCurrentSquare;
+
+            it = mPieces.erase(it);
+
+            mPieces.insert(it, std::make_shared<Queen> (static_cast<float>(
+                std::min(renderer.mWindowSize.x, renderer.mWindowSize.y)), playerTurn, promotionSquare));
+
+            break;
+        }
+    }
 }
